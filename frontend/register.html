@@ -1,216 +1,130 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Create account • Gummy</title>
+<title>Đăng ký | Gummy</title>
 <link rel="stylesheet" href="css/ui.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="css/register.css">
 <style>
   body {
-    background: #F7F7F7;
-    height: 100vh;
-    margin: 0;
+    background: linear-gradient(180deg, #f9f4fb 0%, #f7f7f7 100%);
+    min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;  /* Căn giữa theo chiều dọc */
+    align-items: center;
+    padding: 24px;
+  }
+
+  .auth-page {
+    width: min(500px, 100%);
+    background: rgba(255,255,255,0.97);
+    padding: 36px 32px 28px;
+    border-radius: 28px;
+    box-shadow: 0 22px 60px rgba(0,0,0,0.08);
+  }
+
+  .auth-title {
     font-family: 'Poppins', sans-serif;
-  }
-
-  .gummy-register-box {
-    width: 450px;
-    background: white;
-    padding: 35px;
-    border-radius: 22px;
-    box-shadow: 0 10px 35px rgba(0,0,0,0.12);
-    animation: fadeIn 0.6s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(15px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .gummy-logo {
-    font-size: 55px;
+    font-size: 60px;
     font-weight: 700;
     text-align: center;
     color: #E88DB5;
-    margin-bottom: 10px;
+    margin: 0 0 12px;
   }
 
-  .sub {
+  .auth-subtitle {
     text-align: center;
-    color: #A67E9B;
+    color: #777;
     margin-bottom: 30px;
-    font-size: 17px;
-  }
-
-  /* INPUT FIELDS */
-  .g-row {
-    display: flex;
-    gap: 15px;  /* Tăng khoảng cách giữa 2 ô */
-    margin-bottom: 15px;
-  }
-
-  .g-input {
-    width: 100%;
-    padding: 15px;
-    border-radius: 12px;
-    border: 1px solid #dcdcdc;
-    background: white;
     font-size: 15px;
-    color: #555;
-    transition: 0.25s;
   }
 
-  .g-input:focus {
-    border-color: #B7EBD6;
-    box-shadow: 0 0 0 3px rgba(183,235,214,0.45);
-    outline: none;
+  .row {
+    display: flex;
+    gap: 22px;
+    margin-bottom: 22px;
   }
 
-  /* Each input has spacing */
-  .g-input.single {
-    margin-bottom: 15px;
-  }
-
-  /* BUTTON */
-  .gummy-btn {
+  .auth-input {
     width: 100%;
-    padding: 15px;
-    margin-top: 10px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid #e3e3e3;
+    background: #fafafa;
+    margin-bottom: 22px;
+    font-size: 15px;
+    color: #333;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .auth-input:focus {
+    border-color: rgba(110, 198, 165, 0.9);
+    box-shadow: 0 0 0 5px rgba(183,235,214,0.25);
+  }
+
+  .auth-button {
+    width: 100%;
+    padding: 14px 16px;
     border: none;
-    border-radius: 12px;
-    background: #B7EBD6;
-    color: #3f5f56;
-    font-size: 18px;
+    border-radius: 18px;
+    background: #85c79d;
+    color: #0f4626;
+    font-size: 17px;
     font-weight: 700;
     cursor: pointer;
-    transition: 0.25s;
+    transition: transform 0.2s ease, background 0.2s ease;
   }
 
-  .gummy-btn:hover {
-    background: #AEE4CD;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.12);
+  .auth-button:hover {
+    transform: translateY(-1px);
+    background: #7bc48a;
   }
 
-  /* LINK */
-  .g-login-link {
+  .auth-link-wrap {
     text-align: center;
     margin-top: 20px;
-  }
-
-  .g-login-link a {
-    color: #A67E9B;
-    font-weight: 600;
-    font-size: 16px;
-    transition: 0.2s;
-  }
-
-  .g-login-link a:hover {
-    color: #8f6e89;
-  }
-
-  /* Toast notification */
-  .toast-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 99999;
-    pointer-events: none;
-  }
-
-  .toast {
-    background: white;
-    padding: 16px 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 300px;
-    pointer-events: auto;
-    opacity: 1;
-    transform: translateX(0);
-    animation: slideIn 0.3s ease forwards;
-  }
-
-  @keyframes slideIn {
-    from {
-      transform: translateX(400px);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-
-  .toast.success {
-    border-left: 4px solid #4DB49F;
-  }
-
-  .toast.success .toast-icon {
-    color: #4DB49F;
-  }
-
-  .toast.error {
-    border-left: 4px solid #E88DB5;
-  }
-
-  .toast.error .toast-icon {
-    color: #E88DB5;
-  }
-
-  .toast-icon {
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  .toast-message {
-    flex: 1;
+    color: #666;
     font-size: 14px;
-    color: #333;
   }
 
+  .auth-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 12px 20px;
+    border-radius: 18px;
+    border: 1px solid #c1e8d4;
+    color: #2d7f56;
+    font-weight: 700;
+    background: #f4fbf7;
+  }
+
+  .auth-link:hover {
+    background: #e8f7ee;
+  }
 </style>
-
 </head>
-
 <body>
+  <div class="auth-page">
+    <div class="auth-title">GUMMY</div>
+    <div class="auth-subtitle">Tạo tài khoản mới và bắt đầu chia sẻ những khoảnh khắc ngọt ngào.</div>
 
-<div class="toast-container" id="toastContainer"></div>
+    <form id="registerForm">
+      <div class="row">
+        <input id="first_name" class="auth-input" type="text" placeholder="Tên" autocomplete="given-name">
+        <input id="last_name" class="auth-input" type="text" placeholder="Họ" autocomplete="family-name">
+      </div>
+      <input id="reg_email" class="auth-input" type="email" placeholder="Email hoặc số điện thoại" autocomplete="email">
+      <input id="reg_password" class="auth-input" type="password" placeholder="Mật khẩu" autocomplete="new-password">
+      <button type="submit" class="auth-button">Create Account</button>
+    </form>
 
-<div class="gummy-register-box">
-
-  <div class="gummy-logo">Gummy</div>
-  <div class="sub">Join the sweetest social world ♡</div>
-
-  <form id="registerForm" onsubmit="return false;">
-    <div class="g-row">
-      <input id="reg_firstname" class="g-input" placeholder="First name">
-      <input id="reg_lastname" class="g-input" placeholder="Surname">
+    <div class="auth-link-wrap">
+      <a class="auth-link" href="login.html">Đã có tài khoản? Đăng nhập</a>
     </div>
+  </div>
 
-    <input id="reg_email" class="g-input single" placeholder="Email or Mobile number" required>
-    <input id="reg_password" class="g-input single" placeholder="Password" type="password" required>
-
-    <button type="submit" class="gummy-btn">Create Account</button>
-
-    <div class="g-login-link">
-      <a href="login.html">Already have an account?</a>
-    </div>
-  </form>
-
-</div>
-
-<script src="config.js"></script>
-<script src="js/api/api.base.js"></script>
-<script src="js/auth-shared.js"></script>
-<script src="js/pages/auth.js"></script>
+  <script src="js/auth-shared.js"></script>
+  <script src="js/pages/auth.js"></script>
 </body>
 </html>
