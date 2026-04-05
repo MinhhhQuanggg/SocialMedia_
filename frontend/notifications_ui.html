@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông báo - GUMMY</title>
+    <!-- Thư viện FontAwesome cho các biểu tượng -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Inter hiện đại từ Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Reset CSS cơ bản */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #e5e9f0; /* Nền xám xanh cho trang */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Khung chứa panel thông báo (giống như hiển thị dạng dropdown / popover) */
+        .notifications-panel {
+            width: 700px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Header (Thanh tiêu đề màu xanh mint) */
+        .header {
+            background-color: #79ebd4; /* Xanh ngọc / mint */
+            padding: 16px 24px;
+        }
+
+        .header h2 {
+            color: #fb3b92; /* Màu hồng */
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        /* Container của list thông báo */
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Mỗi dòng thông báo */
+        .notification-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        /* Màu nền phân biệt cho từng dòng (theo ảnh có sự khác biệt đậm nhạt) */
+        .notification-item:nth-child(1) { background-color: #f2f2f2; }
+        .notification-item:nth-child(2) { background-color: #e6e6e6; }
+        .notification-item:nth-child(3) { background-color: #ebebeb; }
+
+        .notification-item:hover {
+            filter: brightness(0.95);
+        }
+
+        /* Phần chứa Avatar hiển thị phía bên trái */
+        .avatar-wrapper {
+            position: relative;
+            margin-right: 18px;
+            flex-shrink: 0;
+        }
+
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+
+        /* Badge icon nhỏ góc dưới bên phải avatar */
+        .icon-badge {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background-color: #1877f2; /* Xanh Facebook */
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 13px;
+            border: 2px solid #fff;
+        }
+
+        /* Màu badge có thể khác nhau tùy loại (ở đây dùng xanh giống ảnh) */
+        .icon-badge.like { background-color: #1877f2; }
+        .icon-badge.comment { background-color: #1877f2; }
+        .icon-badge.friend { background-color: #1877f2; }
+
+        /* Vùng nội dung chính của thông báo (Tên + Text + Thời gian) */
+        .content {
+            flex-grow: 1;
+        }
+
+        .message {
+            font-size: 18px;
+            color: #222;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .message .sender-name {
+            font-weight: 600;
+        }
+
+        .time {
+            font-size: 14px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        /* Chấm xanh lá/xinh dương báo chưa đọc (Unread indicator) */
+        .unread-dot {
+            width: 12px;
+            height: 12px;
+            background-color: #4b6eea; /* Xanh dương / tín hiệu chưa đọc */
+            border-radius: 50%;
+            margin-left: 16px;
+            flex-shrink: 0;
+        }
+        
+        /* Ẩn chấm cho thông báo đã đọc */
+        .unread-dot.read {
+            visibility: hidden;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="notifications-panel">
+        <div class="header">
+            <h2>Thông báo</h2>
+        </div>
+        
+        <div class="notifications-list">
+            
+            <!-- Item 1: Like -->
+            <div class="notification-item unread">
+                <div class="avatar-wrapper">
+                    <!-- Dùng ảnh ngẫu nhiên tượng trưng hoặc hình ảnh nếu bạn có -->
+                    <img src="https://i.pravatar.cc/150?img=11" alt="Thái Nhật" class="avatar">
+                    <div class="icon-badge like">
+                        <i class="fa-solid fa-thumbs-up"></i>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="message"><span class="sender-name">Thái Nhật</span> đã thích bài viết của bạn.</div>
+                    <div class="time">5 phút trước</div>
+                </div>
+                <div class="unread-dot"></div>
+            </div>
+
+            <!-- Item 2: Comment -->
+            <div class="notification-item unread">
+                <div class="avatar-wrapper">
+                    <img src="https://i.pravatar.cc/150?img=12" alt="Kai" class="avatar">
+                    <div class="icon-badge comment">
+                        <i class="fa-solid fa-comment-dots"></i>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="message"><span class="sender-name">Kai</span> đã bình luận bài viết của bạn: Ngầu quá!</div>
+                    <div class="time">10 phút trước</div>
+                </div>
+                <div class="unread-dot"></div>
+            </div>
+
+            <!-- Item 3: Friend Request -->
+            <div class="notification-item">
+                <div class="avatar-wrapper">
+                    <img src="https://i.pravatar.cc/150?img=13" alt="Super" class="avatar">
+                    <div class="icon-badge friend">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="message"><span class="sender-name">Super</span> đã gửi cho bạn lời mời kết bạn.</div>
+                    <div class="time">1 năm trước</div>
+                </div>
+                <!-- Ẩn unread-dot do không có trong ảnh -->
+                <div class="unread-dot read"></div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
