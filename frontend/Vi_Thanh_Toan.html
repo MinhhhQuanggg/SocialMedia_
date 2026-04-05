@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gummy</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+    --bg-header: #ffffff;
+    --bg-body: #ffffff;
+    --bg-sidebar: #e9e9eb;
+    --bg-center: #f4f5f7;
+    --primary-pink: #ef4f91;
+    --text-dark: #111;
+    --text-muted: #555;
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    background-color: var(--bg-body);
+    color: var(--text-dark);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    height: 70px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    background-color: var(--bg-header);
+    position: relative;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--primary-pink);
+    letter-spacing: -0.5px;
+    width: 200px;
+    font-family: 'Arial Black', sans-serif;
+}
+
+.search-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.search-bar {
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 12px 20px 12px 45px;
+    border-radius: 25px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    font-size: 15px;
+    box-sizing: border-box;
+    outline: none;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.search-bar i {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 16px;
+}
+
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    width: 200px;
+    justify-content: flex-end;
+}
+
+.header-icons i {
+    font-size: 20px;
+    color: #333;
+    cursor: pointer;
+}
+
+.main-container {
+    display: flex;
+    padding: 20px 20px;
+    gap: 20px;
+    min-height: calc(100vh - 70px);
+    box-sizing: border-box;
+    background-color: #fcfcfc;
+}
+
+/* Sidebar Left */
+.sidebar-left {
+    width: 210px;
+    background-color: var(--bg-sidebar);
+    border-radius: 12px;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 10px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    border-radius: 25px;
+    background-color: #fff;
+    color: #222;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.nav-item i {
+    width: 20px;
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-right: 12px;
+    text-align: center;
+}
+
+.nav-item.active {
+    background-color: #aae0c2;
+    color: #0b6038;
+}
+
+.nav-item.active i {
+    color: #0b6038;
+}
+
+.sidebar-footer {
+    padding: 0 10px;
+}
+
+.terms-btn {
+    background-color: #faedf2;
+    color: #ab7f94;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Center Content */
+.content-center {
+    flex: 1;
+    background-color: var(--bg-center);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+.content-header {
+    background-color: #ecdfe5;
+    padding: 20px 25px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.content-header h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+    color: #111;
+}
+
+.content-body {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.col {
+    flex: 1;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #111;
+}
+
+/* Cards setup */
+.light-gray-card {
+    background-color: #e6e7e9;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.balance-card {
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.balance-amount {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 15px 0 25px 0;
+    color: #111;
+}
+
+.btn-pink {
+    background-color: var(--primary-pink);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.deposit-options {
+    display: flex;
+    gap: 12px;
+}
+
+.deposit-item {
+    background-color: #e6e7e9;
+    border-radius: 12px;
+    padding: 15px 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.deposit-icon-box {
+    margin-bottom: 10px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.deposit-name {
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #111;
+}
+
+.deposit-item .btn-pink {
+    width: 80%;
+    padding: 8px 0;
+    border-radius: 8px;
+}
+
+.divider {
+    height: 1px;
+    background-color: #333;
+    margin: 0 0 25px 0;
+}
+
+.withdraw-card {
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.withdraw-card p {
+    margin: 0 0 20px 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #111;
+}
+
+/* History List */
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+}
+
+.history-icon {
+    font-size: 36px;
+    margin-right: 15px;
+}
+
+.history-icon .fa-circle-arrow-down { color: #28a745; }
+.history-icon .fa-circle-arrow-up { color: #dc3545; }
+.history-icon .fa-gift { color: #555; }
+
+.history-info {
+    flex: 1;
+}
+
+.history-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: #111;
+}
+
+.history-date {
+    font-size: 11px;
+    color: #555;
+}
+
+.history-amount-info {
+    text-align: right;
+}
+
+.history-amount {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.history-amount.positive { color: #28a745; }
+.history-amount.negative { color: #111; }
+
+.history-status {
+    font-size: 11px;
+    color: #333;
+}
+
+/* Sidebar Right */
+.sidebar-right {
+    width: 260px;
+    background-color: var(--bg-sidebar);
+    border-radius: 12px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.sidebar-right .section-title {
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.right-search {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.right-search input {
+    width: 100%;
+    padding: 10px 15px 10px 35px;
+    border-radius: 20px;
+    border: none;
+    background-color: #fcfcfc;
+    font-size: 13px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.right-search i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    color: #777;
+}
+
+.sidebar-right .btn-pink {
+    width: 100%;
+    border-radius: 20px;
+    padding: 10px;
+    font-size: 13px;
+}
+
+.right-divider {
+    height: 1px;
+    background-color: #333;
+    margin: 25px 0;
+}
+
+.cc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.cc-item {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.cc-icon {
+    width: 44px;
+    height: 44px;
+    margin-right: 15px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e1e1e1;
+}
+
+.cc-info .cc-name {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: #111;
+}
+
+.cc-info .cc-sub {
+    font-size: 11px;
+    color: #444;
+}
+
+/* Custom icons */
+.momo-icon-small {
+    width: 32px;
+    height: 32px;
+    background-color: #a50064;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 9px;
+    line-height: 1.1;
+}
+
+.momo-icon-large {
+    width: 48px;
+    height: 48px;
+    background-color: #a50064;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 1.1;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <div class="logo">GUMMY</div>
+    <div class="search-wrapper">
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="">
+        </div>
+    </div>
+    <div class="header-icons">
+        <i class="fa-regular fa-bell"></i>
+        <i class="fa-regular fa-comment-dots"></i>
+        <i class="fa-regular fa-circle-user"></i>
+    </div>
+</div>
+
+<div class="main-container">
+    
+    <div class="sidebar-left">
+        <div class="nav-list">
+            <div class="nav-item">
+                <i class="fa-solid fa-house"></i> Bảng tin
+            </div>
+            <div class="nav-item">
+                <i class="fa-regular fa-user"></i> Hồ sơ của tôi
+            </div>
+            <div class="nav-item">
+                <i class="fa-solid fa-users"></i> Bạn bè
+            </div>
+            <div class="nav-item">
+                <i class="fa-solid fa-people-group"></i> Cộng đồng
+            </div>
+            <div class="nav-item">
+                <i class="fa-regular fa-images"></i> Phương tiện
+            </div>
+            <div class="nav-item">
+                <i class="fa-solid fa-gear"></i> Cài đặt
+            </div>
+            <div class="nav-item">
+                <i class="fa-regular fa-calendar"></i> Sự Kiện
+            </div>
+            <div class="nav-item">
+                <i class="fa-regular fa-folder"></i> Kho lưu trữ
+            </div>
+            <div class="nav-item">
+                <i class="fa-solid fa-gamepad"></i> Game
+            </div>
+            <div class="nav-item">
+                <i class="fa-solid fa-shield-halved"></i> Báo cáo & khiếu nại
+            </div>
+            <div class="nav-item">
+                <i class="fa-solid fa-circle-info"></i> Trung tâm trợ giúp
+            </div>
+            <div class="nav-item active">
+                <i class="fa-solid fa-earth-americas"></i> Thanh toán
+            </div>
+        </div>
+        <div class="sidebar-footer">
+            <div class="terms-btn">
+                <i class="fa-solid fa-file-contract"></i> Điều Khoản & Bảo Mật
+            </div>
+        </div>
+    </div>
+
+    <div class="content-center">
+        <div class="content-header">
+            <h2>Ví Gummy của tôi</h2>
+        </div>
+        <div class="content-body">
+            
+            <div class="row">
+                <div class="col" style="flex: 1.1;">
+                    <div class="section-title">Số dư khả dụng</div>
+                    <div class="light-gray-card balance-card">
+                        <div class="balance-amount">9,999,999 VNĐ</div>
+                        <div><button class="btn-pink" style="padding: 10px 25px;">Nạp tiền ngay</button></div>
+                    </div>
+                </div>
+                
+                <div class="col" style="flex: 1.5;">
+                    <div class="section-title">Nạp tiền vào ví</div>
+                    <div class="deposit-options">
+                        
+                        <div class="deposit-item">
+                            <div class="deposit-icon-box">
+                                <div class="momo-icon-large">
+                                    <div>mo</div><div>mo</div>
+                                </div>
+                            </div>
+                            <div class="deposit-name">MoMo Wallet</div>
+                            <button class="btn-pink">Nạp</button>
+                        </div>
+                        
+                        <div class="deposit-item">
+                            <div class="deposit-icon-box">
+                                <i class="fa-regular fa-credit-card" style="font-size: 38px; color: #333;"></i>
+                            </div>
+                            <div class="deposit-name">Thẻ Visa/Master</div>
+                            <button class="btn-pink">Nạp</button>
+                        </div>
+                        
+                        <div class="deposit-item">
+                            <div class="deposit-icon-box" style="position:relative;">
+                                <i class="fa-solid fa-building-columns" style="font-size: 32px; color: #333;"></i>
+                                <div style="position:absolute; top: 11px; left:0; width:100%; font-size: 8px; font-weight:bold; color:#333;">BANK</div>
+                            </div>
+                            <div class="deposit-name">Ngân Hàng<br><span style="font-size: 8px; font-weight: normal;">(Vietcombank, etc.)</span></div>
+                            <button class="btn-pink">Nạp</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="row">
+                <div class="col" style="flex: 0.8;">
+                    <div class="section-title">Rút tiền từ Ví</div>
+                    <div class="light-gray-card withdraw-card">
+                        <p>Rút về ngân hàng liên kết</p>
+                        <button class="btn-pink" style="padding: 10px 25px;">Rút tiền</button>
+                    </div>
+                </div>
+                <div class="col" style="flex: 1.2;">
+                    <div class="section-title">Lịch sử giao dịch</div>
+                    <div class="history-list">
+                        
+                        <div class="history-item">
+                            <div class="history-icon">
+                                <i class="fa-solid fa-circle-arrow-down"></i>
+                            </div>
+                            <div class="history-info">
+                                <div class="history-title">Nạp tiền từ MoMo</div>
+                                <div class="history-date">24/3/2026, 10:30</div>
+                            </div>
+                            <div class="history-amount-info">
+                                <div class="history-amount positive">+500,000 VNĐ</div>
+                                <div class="history-status">Thành công</div>
+                            </div>
+                        </div>
+
+                        <div class="history-item">
+                            <div class="history-icon">
+                                <i class="fa-solid fa-circle-arrow-up"></i>
+                            </div>
+                            <div class="history-info">
+                                <div class="history-title">Rút về Vietcombank</div>
+                                <div class="history-date">23/3/2026, 15:45</div>
+                            </div>
+                            <div class="history-amount-info">
+                                <div class="history-amount negative">-200,000 VNĐ</div>
+                                <div class="history-status">Thành công</div>
+                            </div>
+                        </div>
+
+                        <div class="history-item">
+                            <div class="history-icon">
+                                <i class="fa-solid fa-gift"></i>
+                            </div>
+                            <div class="history-info">
+                                <div class="history-title">Tặng quà cho 'Da Đen 2'</div>
+                                <div class="history-date">22/3/2026, 8:20</div>
+                            </div>
+                            <div class="history-amount-info">
+                                <div class="history-amount negative">-100,000 VNĐ</div>
+                                <div class="history-status">Thành công</div>
+                            </div>
+                        </div>
+
+                        <div class="history-item">
+                            <div class="history-icon">
+                                <i class="fa-solid fa-circle-arrow-down"></i>
+                            </div>
+                            <div class="history-info">
+                                <div class="history-title">Nạp tiền từ Visa</div>
+                                <div class="history-date">21/3/2026, 11:15</div>
+                            </div>
+                            <div class="history-amount-info">
+                                <div class="history-amount positive">+800,000 VNĐ</div>
+                                <div class="history-status">Thành công</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="sidebar-right">
+        <div class="section-title">Dịch vụ tài chính</div>
+        <div class="right-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Tìm kiếm dịch vụ">
+        </div>
+        <button class="btn-pink">+ Nạp nhanh</button>
+
+        <div class="right-divider"></div>
+
+        <div class="section-title">Thẻ & Tài khoản của tôi</div>
+        <div class="cc-list">
+            
+            <div class="cc-item">
+                <div class="cc-icon">
+                    <i class="fa-regular fa-address-card" style="font-size: 24px; color: #111;"></i>
+                </div>
+                <div class="cc-info">
+                    <div class="cc-name">Visa **9988</div>
+                    <div class="cc-sub">(Vietcombank)</div>
+                </div>
+            </div>
+
+            <div class="cc-item">
+                <div class="cc-icon">
+                    <div class="momo-icon-small">
+                        <div>mo</div><div>mo</div>
+                    </div>
+                </div>
+                <div class="cc-info">
+                    <div class="cc-name">MoMo Wallet</div>
+                    <div class="cc-sub">e.g: 099 999 9999</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
