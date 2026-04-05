@@ -1,196 +1,224 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Gummy – Cộng đồng</title>
-
+<title>Cộng đồng | Gummy</title>
 <link rel="stylesheet" href="css/ui.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 <style>
-/* ========== COMMUNITIES PAGE STYLE ========== */
+    body {
+        background: #f2f2f5;
+        min-height: 100vh;
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+    }
 
-.center-feed-premium {
-    width: 780px;
-    margin: auto;
-}
+    .center-feed-premium {
+        flex: 1;
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 38px 0 60px;
+    }
 
-.community-create {
-    padding: 20px;
-    margin-bottom: 30px;
-}
+    .page-heading {
+        font-size: 26px;
+        font-weight: 700;
+        color: #E88DB5;
+        margin-bottom: 24px;
+        text-align: left;
+    }
 
-.community-item {
-    display: flex;
-    gap: 15px;
-    padding: 15px;
-    align-items: center;
-    margin-bottom: 18px;
-}
+    .community-create {
+        background: white;
+        border: 1px solid #e6e6e6;
+        border-radius: 40px;
+        padding: 32px 28px;
+        margin-bottom: 24px;
+    }
 
-.community-cover {
-    width: 140px;
-    height: 90px;
-    object-fit: cover;
-    border-radius: 10px;
-}
+    .community-create-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #E88DB5;
+        margin-bottom: 18px;
+    }
 
-.community-info {
-    flex: 1;
-}
+    .community-create-body {
+        display: grid;
+        gap: 16px;
+    }
 
-.comm-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--gummy-purple);
-}
+    .community-create-body .input,
+    .community-create-body textarea {
+        width: 100%;
+        border-radius: 999px;
+        padding: 16px 20px;
+        border: 1px solid #e6e6e6;
+        background: #fafafa;
+        outline: none;
+        font-size: 15px;
+        color: #444;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
 
-.comm-desc {
-    color: #444;
-    font-size: 14px;
-    margin: 5px 0;
-}
+    .community-create-body .input:focus,
+    .community-create-body textarea:focus {
+        border-color: #b7ebd6;
+        box-shadow: 0 0 0 4px rgba(183,235,214,0.25);
+    }
 
-.comm-meta {
-    font-size: 13px;
-    color: gray;
-}
+    .community-create-body textarea {
+        border-radius: 24px;
+        min-height: 110px;
+        resize: vertical;
+    }
 
-.btn-join {
-    padding: 8px 16px;
-    border-radius: 12px;
-    cursor: pointer;
-}
+    .community-create-body .btn-premium {
+        width: 100%;
+        border-radius: 999px;
+        background: #b7ebd6;
+        color: #ffffff;
+        border: none;
+        font-size: 16px;
+        font-weight: 700;
+        padding: 14px 0;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
 
-input.input, textarea.input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: inherit;
-}
+    .community-create-body .btn-premium:hover {
+        background: #9fe0b7;
+    }
+    .layout-premium {
+        position: relative;
+    }
 
-.btn-premium {
-    width: 100%;
-    padding: 12px;
-    background: var(--gummy-mint);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-}
+    .community-star {
+        position: absolute;
+        top: 130px;
+        right: 30px;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+        font-size: 80px;
+        color: #ffcd00;
+    }
+    .community-card {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 18px;
+        border-radius: 24px;
+        border: 1px solid #e8e8e8;
+        background: white;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
 
-.card-premium {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
+    .community-card img {
+        width: 90px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 18px;
+        flex-shrink: 0;
+    }
+
+    .community-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .community-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #E88DB5;
+        margin-bottom: 8px;
+    }
+
+    .community-desc {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .community-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 120px;
+    }
+
+    .btn-join {
+        border-radius: 999px;
+        border: 1px solid #222;
+        background: white;
+        color: #222;
+        padding: 10px 20px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .btn-join:hover {
+        background: #f4f4f4;
+    }
+
+    .btn-join.joined {
+        background: #b7ebd6;
+        color: #2a4f3d;
+        border-color: #9ed9b6;
+    }
 </style>
-
 </head>
-
 <body>
-
-<!-- ⭐ INCLUDE SHARED LAYOUT -->
-<div id="layout-container"></div>
-
-<!-- ⭐ CENTER FEED -->
 <div class="layout-premium">
     <div class="center-feed-premium">
+        <div class="community-star">★</div>
+        <div class="page-heading">Khám phá cộng đồng</div>
 
-        <h2 style="color: var(--gummy-pink); margin-bottom: 20px;">Khám phá Cộng đồng</h2>
-
-        <!-- CREATE COMMUNITY BOX -->
-        <div class="card-premium community-create">
-            <h3 style="color: var(--gummy-purple)">Tạo Cộng đồng Mới</h3>
-
-            <input class="input" id="newCommunityName" placeholder="Tên cộng đồng">
-            <textarea class="input" id="newCommunityDesc" placeholder="Mô tả"></textarea>
-
-            <button class="btn-premium" onclick="createCommunity()">Tạo</button>
+        <div class="community-create">
+            <div class="community-create-title">Tạo cộng đồng mới</div>
+            <div class="community-create-body">
+                <input id="newCommunityName" class="input" type="text" placeholder="Tên cộng đồng">
+                <textarea id="newCommunityDesc" placeholder="Mô tả"></textarea>
+                <button type="button" class="btn-premium" onclick="createCommunity()">Tạo</button>
+            </div>
         </div>
 
-
-        <!-- COMMUNITY LIST -->
         <div id="communityList">
-
-            <div class="community-item card-premium">
-                <img src="https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg" class="community-cover">
+            <div class="community-card">
+                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=300&q=80" alt="Cộng đồng nhiếp ảnh">
                 <div class="community-info">
-                    <div class="comm-title">Cộng đồng Nghệ sĩ Gummy</div>
-                    <div class="comm-desc">Một cộng đồng dành cho những nghệ sĩ pastel và những người sáng tạo phong cách kẹo.</div>
-                    <div class="comm-meta">12.400 thành viên</div>
+                    <div class="community-title">Cộng đồng nhiếp ảnh</div>
+                    <div class="community-desc">Chia sẻ những bức ảnh đẹp nhất của bạn và học hỏi cùng nhau.</div>
                 </div>
-                <button class="btn-mint btn-join">Tham gia</button>
+                <div class="community-actions">
+                    <button class="btn-join">Tham gia</button>
+                </div>
             </div>
 
-            <div class="community-item card-premium">
-                <img src="https://images.pexels.com/photos/34950/pexels-photo.jpg" class="community-cover">
+            <div class="community-card">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=300&q=80" alt="Chia sẻ làm đẹp">
                 <div class="community-info">
-                    <div class="comm-title">Trung tâm Nhiếp ảnh</div>
-                    <div class="comm-desc">Chia sẻ những bức ảnh đẹp nhất của bạn và học hỏi cùng nhau.</div>
-                    <div class="comm-meta">8.920 thành viên</div>
+                    <div class="community-title">Chia sẻ kiến thức làm đẹp</div>
+                    <div class="community-desc">Chia sẻ những kiến thức và sản phẩm làm đẹp uy tín.</div>
                 </div>
-                <button class="btn-mint btn-join">Tham gia</button>
-            </div>
-
-            <div class="community-item card-premium">
-                <img src="https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg" class="community-cover">
-                <div class="community-info">
-                    <div class="comm-title">Thực phẩm & Công thức</div>
-                    <div class="comm-desc">Các công thức nấu ăn ngon từ khắp nơi trên thế giới 🍰</div>
-                    <div class="comm-meta">20.310 thành viên</div>
+                <div class="community-actions">
+                    <button class="btn-join">Tham gia</button>
                 </div>
-                <button class="btn-mint btn-join">Tham gia</button>
             </div>
-
         </div>
     </div>
+</div>
 
-</div> <!-- END layout-premium -->
-
-<script>
-// Load avatar vào topbar
-let userAvatar = localStorage.getItem("gummy_avatar");
-if (userAvatar) {
-    document.getElementById("headerAvatar").style.backgroundImage =
-        `url('${userAvatar}')`;
-}
-
-// Tạo cộng đồng mới (demo)
-function createCommunity() {
-    let name = document.getElementById("newCommunityName").value.trim();
-    let desc = document.getElementById("newCommunityDesc").value.trim();
-    if (!name) return alert("Vui lòng nhập tên cộng đồng!");
-
-    const list = document.getElementById("communityList");
-
-    list.innerHTML = `
-        <div class="community-item card-premium">
-            <img src="https://images.pexels.com/photos/914929/pexels-photo-914929.jpeg" class="community-cover">
-            <div class="community-info">
-                <div class="comm-title">${name}</div>
-                <div class="comm-desc">${desc || "Không có mô tả"}</div>
-                <div class="comm-meta">1 thành viên</div>
-            </div>
-            <button class="btn-mint btn-join">Tham gia</button>
-        </div>
-    ` + list.innerHTML;
-
-    document.getElementById("newCommunityName").value = "";
-    document.getElementById("newCommunityDesc").value = "";
-}
-</script>
-
-<script src="includes/layout.html"></script>
 <script src="config.js"></script>
 <script src="js/api/api.base.js"></script>
-<script src="js/api/api.users.js"></script>
-<script src="js/api/api.chat.js"></script>
 <script src="js/shared-layout.js"></script>
-
+<script src="js/pages/communities.js"></script>
 </body>
 </html>
