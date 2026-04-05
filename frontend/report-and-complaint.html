@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trung tâm Báo cáo & Khiếu nại - GUMMY</title>
+    <!-- Thư viện FontAwesome cho các biểu tượng -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Inter hiện đại từ Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset CSS cơ bản */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #e5e9f0; /* Nền xám xanh nhạt */
+            color: #333; 
+        }
+        
+        /* Container bọc toàn bộ ứng dụng */
+        .app-container { 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            border: 3px solid #3fb3ff; /* Viền xanh dương bao quanh giống trong ảnh */
+            margin: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #e6e6e6; /* Màu nền khu vực giữa */
+        }
+        
+        /* Navbar - Thanh điều hướng trên cùng */
+        .navbar { 
+            height: 64px; 
+            background-color: #fff; 
+            display: flex; 
+            align-items: center; 
+            padding: 0 24px; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            justify-content: space-between; 
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .logo { 
+            font-size: 26px; 
+            font-weight: 800; 
+            color: #f7388d; /* Pink của logo */
+            margin-right: 40px; 
+            letter-spacing: -0.5px; 
+        }
+        
+        .search-bar { 
+            flex-grow: 1; 
+            max-width: 600px; 
+            display: flex; 
+            align-items: center; 
+            background-color: #ffffff; 
+            border: 1px solid #ccc;
+            border-radius: 24px; 
+            padding: 10px 20px; 
+            margin: 0 20px; 
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Hiệu ứng hơi lõm */
+        }
+        
+        .search-bar i { 
+            color: #555; 
+            margin-right: 12px; 
+            font-size: 16px;
+        }
+        
+        .search-bar input { 
+            border: none; 
+            background: transparent; 
+            outline: none; 
+            width: 100%; 
+            font-size: 15px; 
+        }
+        
+        .nav-actions { 
+            display: flex; 
+            align-items: center; 
+            gap: 24px; 
+            margin-left: auto;
+        }
+        
+        .nav-actions i { 
+            font-size: 22px; 
+            color: #333; 
+            cursor: pointer; 
+        }
+        
+        /* Khu vực thân chứa Sidebar và Nội dung */
+        .main-body { 
+            display: flex; 
+            flex: 1; 
+            padding: 20px; 
+            gap: 24px; 
+            width: 100%;
+        }
+        
+        /* Sidebar Menu bên trái */
+        .sidebar { 
+            width: 250px; 
+            display: flex; 
+            flex-direction: column; 
+            flex-shrink: 0;
+        }
+        
+        .menu-item { 
+            display: flex; 
+            align-items: center; 
+            padding: 10px 16px; 
+            margin-bottom: 8px; 
+            border-radius: 20px; /* Nút menu bo cong viên thuốc */
+            cursor: pointer; 
+            color: #333; 
+            font-weight: 600; 
+            font-size: 14px;
+            background-color: #fff; 
+            transition: all 0.2s; 
+            border: none;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .menu-item i { 
+            width: 28px; 
+            margin-right: 8px; 
+            color: #555; 
+            text-align: center; 
+            font-size: 16px;
+        }
+        
+        .menu-item:hover:not(.active) { 
+            background-color: #f5f5f5; 
+        }
+        
+        /* Cục menu đang được chọn (Active) */
+        .menu-item.active { 
+            background-color: #bbf2d3; /* Màu xanh ngọc nhạt */
+            color: #1a1a1a; 
+        }
+        
+        .menu-item.active i { 
+            color: #1a1a1a; 
+        }
+        
+        .bottom-link { 
+            margin-top: auto; 
+            padding: 12px 16px; 
+            color: #f3acc6; /* Màu hồng nhạt cho text dưới cùng */
+            font-size: 13px; 
+            font-weight: 600; 
+            display: flex; 
+            align-items: center; 
+            cursor: pointer; 
+            background-color: #fff;
+            border-radius: 8px;
+            width: fit-content;
+        }
+        
+        .bottom-link i { margin-right: 8px; }
+        
+        /* Nội dung chính bên phải */
+        .content { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+            min-width: 0;
+        }
+        
+        /* Thẻ nội dung (Card) */
+        .card { 
+            background-color: #fff; 
+            border-radius: 16px; 
+            padding: 24px 30px; 
+            box-shadow: 0 2px 15px rgba(0,0,0,0.03); 
+        }
+        
+        .title-main { 
+            color: #f7388d; 
+            font-size: 18px; 
+            font-weight: 800; 
+            margin-bottom: 24px; 
+            text-transform: uppercase; 
+        }
+        
+        .title-sub { 
+            color: #f7388d; 
+            font-size: 16px; 
+            font-weight: 700; 
+            margin-bottom: 16px; 
+        }
+        
+        .section-title { 
+            font-size: 15px; 
+            font-weight: 700; 
+            color: #333; 
+            margin-bottom: 16px; 
+        }
+        
+        /* Các nút Gửi báo cáo mới */
+        .action-buttons { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 16px; 
+        }
+        
+        .btn-action { 
+            display: flex; 
+            align-items: center; 
+            padding: 16px; 
+            border-radius: 12px; 
+            font-weight: 600; 
+            font-size: 14px;
+            cursor: pointer; 
+            border: none; 
+            transition: transform 0.2s, background-color 0.2s; 
+            background-color: #f9cbe0; /* Màu nền hồng phấn nhạt */
+            color: #111; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .btn-action i { 
+            margin-right: 12px; 
+            font-size: 18px; 
+            font-weight: normal;
+        }
+        
+        .btn-action:hover { 
+            transform: translateY(-2px); 
+            background-color: #f8b8d4;
+        }
+        
+        /* Phần chứa Lịch sử báo cáo */
+        /* Toolbar (Bộ lọc và Tìm kiếm) */
+        .toolbar-history {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .filters {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .filter-select {
+            padding: 8px 30px 8px 16px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            background-color: #eaeaea;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+            appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23666'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 20px;
+        }
+        
+        .search-history {
+            display: flex;
+            align-items: center;
+            background-color: #eaeaea;
+            border-radius: 20px;
+            padding: 8px 16px;
+            width: 320px;
+        }
+        
+        .search-history i { color: #555; }
+        .search-history input {
+            border: none;
+            background: transparent;
+            outline: none;
+            margin-left: 10px;
+            width: 100%;
+            font-size: 14px;
+        }
+        
+        /* Bảng dữ liệu */
+        .table-wrapper {
+            width: 100%;
+        }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            text-align: left; 
+        }
+        
+        th, td { 
+            padding: 16px 12px; 
+            border-bottom: 1px solid #e0e0e0; 
+            font-size: 14px; 
+        }
+        
+        th { 
+            background-color: #d9d9d9; 
+            font-weight: 700; 
+            color: #111; 
+        }
+        
+        /* Căn chỉnh số thứ tự (mặc định lấy cột 1 của tbody) */
+        tbody tr td:first-child { width: 40px; text-align: center; font-weight: 600;}
+        th:first-child { width: 40px; text-align: center;}
+        
+        /* Badges (Nhãn trạng thái) */
+        .badge { 
+            padding: 6px 16px; 
+            border-radius: 20px; 
+            font-size: 13px; 
+            font-weight: 600; 
+            display: inline-block;
+        }
+        
+        .badge-pending { 
+            background-color: #ffe6b2; 
+            color: #333; 
+        }
+        
+        .badge-resolved { 
+            background-color: #a8efc9; 
+            color: #333; 
+        }
+        
+        .action-link { 
+            color: #333; 
+            text-decoration: none; 
+            font-weight: 600; 
+            cursor: pointer;
+        }
+        
+        .action-link:hover { 
+            text-decoration: underline; 
+            color: #f7388d; 
+        }
+        
+        /* Phân trang (Pagination) */
+        .pagination { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 12px; 
+            margin-top: 30px; 
+        }
+        
+        .page-btn { 
+            width: 36px; 
+            height: 36px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            border-radius: 8px; 
+            border: none; 
+            cursor: pointer; 
+            background-color: #ccc; 
+            color: #333; 
+            font-weight: 600; 
+            font-size: 14px;
+        }
+        
+        .page-nav { 
+            background-color: #f7388d; 
+            color: #fff; 
+            border-radius: 8px; /* Trong hình nó bo góc như hình vuông nhè nhẹ */
+        }
+        
+        .page-nav:hover {
+            background-color: #e02f7d;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Thanh điều hướng trên cùng -->
+        <header class="navbar">
+            <div class="logo">GUMMY</div>
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="">
+            </div>
+            <div class="nav-actions">
+                <i class="fa-regular fa-bell"></i>
+                <i class="fa-regular fa-comment-dots"></i>
+                <i class="fa-regular fa-user-circle"></i>
+            </div>
+        </header>
+
+        <!-- Phần thân -->
+        <div class="main-body">
+            <!-- Cột Menu Trái -->
+            <aside class="sidebar">
+                <div class="menu-list">
+                    <a class="menu-item"><i class="fa-solid fa-house"></i> Bảng tin</a>
+                    <a class="menu-item"><i class="fa-regular fa-circle-user"></i> Hồ sơ của tôi</a>
+                    <a class="menu-item"><i class="fa-solid fa-user-group"></i> Bạn bè</a>
+                    <a class="menu-item"><i class="fa-solid fa-globe"></i> Cộng đồng</a>
+                    <a class="menu-item"><i class="fa-regular fa-images"></i> Phương tiện</a>
+                    <a class="menu-item"><i class="fa-solid fa-gear"></i> Cài đặt</a>
+                    <a class="menu-item"><i class="fa-regular fa-calendar"></i> Sự kiện</a>
+                    <a class="menu-item"><i class="fa-regular fa-folder"></i> Kho lưu trữ</a>
+                    <a class="menu-item"><i class="fa-solid fa-gamepad"></i> Game</a>
+                    <a class="menu-item active"><i class="fa-solid fa-shield-halved"></i> Báo cáo & khiếu nại</a>
+                    <a class="menu-item"><i class="fa-solid fa-circle-info"></i> Trung tâm trợ giúp</a>
+                    <a class="menu-item"><i class="fa-solid fa-globe"></i> Thanh toán</a> <!-- Dùng tạm icon globe, có thể sửa -->
+                </div>
+                
+                <div class="bottom-link">
+                    <i class="fa-solid fa-file-signature"></i> Điều Khoản & Bảo Mật
+                </div>
+            </aside>
+
+            <!-- Khu vực Nội dung chính -->
+            <main class="content">
+                <!-- Khu vực 1: Gửi báo cáo -->
+                <div class="card" style="padding-bottom: 30px;">
+                    <h1 class="title-main">TRUNG TÂM BÁO CÁO & KHIẾU NẠI</h1>
+                    <h2 class="section-title">Gửi Báo Cáo Mới</h2>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-action">
+                            <i class="fa-regular fa-flag"></i> Vi phạm nội dung
+                        </button>
+                        <button class="btn-action">
+                            <i class="fa-solid fa-bug"></i> Lỗi kĩ thuật
+                        </button>
+                        <button class="btn-action">
+                            <i class="fa-regular fa-copyright"></i> Bản quyền
+                        </button>
+                        <button class="btn-action">
+                            <i class="fa-solid fa-shield-cat"></i> Bảo mật & Spam
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Khu vực 2: Lịch sử -->
+                <div class="card" style="flex: 1; display: flex; flex-direction: column;">
+                    <h2 class="title-sub" style="margin-bottom: 5px;">Lịch sử</h2>
+                    <hr style="border: none; border-bottom: 1px solid #ccc; margin-bottom: 20px;">
+                    
+                    <div class="toolbar-history">
+                        <div class="filters">
+                            <div class="filter-item">
+                                <label>Loại</label>
+                                <select class="filter-select" style="width: 120px;">
+                                    <option>Loại</option>
+                                    <option>Vi phạm</option>
+                                    <option>Bản quyền</option>
+                                </select>
+                            </div>
+                            <div class="filter-item">
+                                <select class="filter-select" style="width: 150px;">
+                                    <option>Trạng thái</option>
+                                    <option>Đang xử lý</option>
+                                    <option>Đã giải quyết</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="search-history">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Tìm lịch sử báo cáo">
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Mã báo cáo</th>
+                                    <th>Tiêu đề</th>
+                                    <th>Ngày gửi</th>
+                                    <th>Trạng thái</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>#RPT-0001</td>
+                                    <td>Góp ý giao diện hệ thống</td>
+                                    <td>01/03/2026</td>
+                                    <td><span class="badge badge-pending">Đang xử lý</span></td>
+                                    <td><a href="#" class="action-link">Xem chi tiết</a></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>#KAN-0002</td>
+                                    <td>Nội dung phản cảm</td>
+                                    <td>10/03/2026</td>
+                                    <td><span class="badge badge-resolved">Đã giải quyết</span></td>
+                                    <td><a href="#" class="action-link">Xem phản hồi</a></td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>#KNA-2004</td>
+                                    <td>Báo cáo người dùng</td>
+                                    <td>10/03/2026</td>
+                                    <td><span class="badge badge-pending">Đang xử lý</span></td>
+                                    <td><a href="#" class="action-link">Xem chi tiết</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Phân trang nằm gọn ở dưới -->
+                    <div class="pagination">
+                        <button class="page-btn page-nav"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="page-btn">1</button>
+                        <button class="page-btn" style="background-color: #999; color: white;">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn page-nav"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
