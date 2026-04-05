@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cài Đặt - GUMMY</title>
+    <!-- Thư viện FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Inter hiện đại -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset CSS cơ bản */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #e5e9f0; 
+            color: #333; 
+        }
+        
+        /* Container bọc toàn bộ ứng dụng */
+        .app-container { 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            border: 3px solid #3fb3ff; /* Viền xanh dương */
+            margin: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #e2e5e9; /* Màu nền xám nhạt */
+        }
+        
+        /* Navbar - Thanh điều hướng trên cùng */
+        .navbar { 
+            height: 64px; 
+            background-color: #fff; 
+            display: flex; 
+            align-items: center; 
+            padding: 0 24px; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            justify-content: space-between; 
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .logo { 
+            font-size: 26px; 
+            font-weight: 900; 
+            color: #f7388d; 
+            margin-right: 40px; 
+            letter-spacing: -0.5px; 
+        }
+        
+        .search-bar { 
+            flex-grow: 1; 
+            max-width: 600px; 
+            display: flex; 
+            align-items: center; 
+            background-color: #ffffff; 
+            border: 1px solid #ccc;
+            border-radius: 24px; 
+            padding: 10px 20px; 
+            margin: 0 20px; 
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .search-bar i { color: #555; margin-right: 12px; font-size: 16px;}
+        .search-bar input { border: none; background: transparent; outline: none; width: 100%; font-size: 15px; }
+        
+        .nav-actions { display: flex; align-items: center; gap: 24px; margin-left: auto;}
+        .nav-actions i { font-size: 22px; color: #333; cursor: pointer; }
+        
+        /* Layout Thân (Body) */
+        .main-body { 
+            display: flex; 
+            flex: 1; 
+            padding: 20px 24px; 
+            gap: 30px; 
+            width: 100%;
+        }
+        
+        /* Sidebar Menu bên trái */
+        .sidebar { 
+            width: 240px; 
+            display: flex; 
+            flex-direction: column; 
+            flex-shrink: 0;
+            gap: 8px;
+        }
+        
+        .menu-item { 
+            display: flex; 
+            align-items: center; 
+            padding: 10px 16px; 
+            border-radius: 20px; 
+            cursor: pointer; 
+            color: #333; 
+            font-weight: 600; 
+            font-size: 14px;
+            background-color: #fff; 
+            transition: all 0.2s; 
+            border: none;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+        
+        .menu-item i { width: 28px; margin-right: 8px; color: #555; text-align: center; font-size: 16px;}
+        .menu-item:hover:not(.active) { background-color: #f5f5f5; }
+        
+        /* Nút Cài đặt Active */
+        .menu-item.active { 
+            background-color: #9cf3cc; /* Xanh ngọc đậm hơn một chút so với hình */
+            color: #1a1a1a; 
+        }
+        .menu-item.active i { color: #1a1a1a; }
+        
+        .bottom-link { 
+            margin-top: auto; 
+            padding: 12px 16px; 
+            color: #f3acc6; 
+            font-size: 13px; 
+            font-weight: 600; 
+            display: flex; 
+            align-items: center; 
+            cursor: pointer; 
+            background-color: #fff;
+            border-radius: 8px;
+            width: fit-content;
+        }
+        
+        .bottom-link i { margin-right: 8px; }
+        
+        /* Nội dung chính bên phải */
+        .content { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+            min-width: 0;
+        }
+        
+        /* Thẻ cài đặt (Card) */
+        .settings-card {
+            background-color: #fff;
+            border-radius: 20px;
+            padding: 24px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card-title {
+            color: #fc5c9c;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        /* Từng dòng cài đặt (Setting Row) */
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Đẩy nội dung ra hai bên */
+        }
+
+        .setting-label {
+            font-size: 15px;
+            color: #222;
+            flex: 1;
+        }
+
+        .setting-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Khoảng cách giữa ô xám và nút xanh */
+            width: 50%; /* Có thể điều chỉnh để cố định vị trí */
+            justify-content: flex-end;
+        }
+        
+        /* Đối với form riêng tư chỉ có dropdown (2 cột) */
+        .setting-row-2col .setting-actions {
+            width: auto;
+        }
+
+        /* Pill màu xám (Giá trị đang có) */
+        .value-pill {
+            background-color: #dcdcdc; /* Xám bạc */
+            border-radius: 20px;
+            padding: 6px 16px;
+            min-width: 200px;
+            text-align: center;
+            color: #222;
+            font-size: 14px;
+            border: none;
+            outline: none;
+        }
+
+        /* Nút màu xanh lá (Chỉnh sửa/Thay đổi) */
+        .btn-green {
+            background-color: #6aebad;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            min-width: 110px;
+            text-align: center;
+        }
+        .btn-green:hover {
+            opacity: 0.85;
+        }
+
+        /* Nút Dropdown xanh lá */
+        .btn-dropdown {
+            background-color: #6aebad;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 16px 6px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 140px;
+            justify-content: space-between;
+        }
+        .btn-dropdown i {
+            font-size: 12px;
+        }
+        .btn-dropdown:hover {
+            opacity: 0.85;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Thanh điều hướng trên cùng -->
+        <header class="navbar">
+            <div class="logo">GUMMY</div>
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="">
+            </div>
+            <div class="nav-actions">
+                <i class="fa-regular fa-bell"></i>
+                <i class="fa-regular fa-comment-dots"></i>
+                <i class="fa-regular fa-user-circle"></i>
+            </div>
+        </header>
+
+        <!-- Thân Ứng dụng -->
+        <div class="main-body">
+            <!-- Cột Menu Trái -->
+            <aside class="sidebar">
+                <a class="menu-item"><i class="fa-solid fa-house"></i> Bảng tin</a>
+                <a class="menu-item"><i class="fa-regular fa-circle-user"></i> Hồ sơ của tôi</a>
+                <a class="menu-item"><i class="fa-solid fa-user-group"></i> Bạn bè</a>
+                <a class="menu-item"><i class="fa-solid fa-globe"></i> Cộng đồng</a>
+                <a class="menu-item"><i class="fa-regular fa-images"></i> Phương tiện</a>
+                <a class="menu-item active"><i class="fa-solid fa-gear"></i> Cài đặt</a>
+                <a class="menu-item"><i class="fa-regular fa-calendar"></i> Sự kiện</a>
+                <a class="menu-item"><i class="fa-regular fa-folder"></i> Kho lưu trữ</a>
+                <a class="menu-item"><i class="fa-solid fa-gamepad"></i> Game</a>
+                <a class="menu-item"><i class="fa-solid fa-shield-halved"></i> Báo cáo & khiếu nại</a>
+                <a class="menu-item"><i class="fa-solid fa-circle-info"></i> Trung tâm trợ giúp</a>
+                <a class="menu-item"><i class="fa-solid fa-globe"></i> Thanh toán</a>
+                
+                <div class="bottom-link">
+                    <i class="fa-solid fa-file-signature"></i> Điều Khoản & Bảo Mật
+                </div>
+            </aside>
+
+            <!-- Khu vực Nội dung chính -->
+            <main class="content">
+                
+                <!-- Card 1: Cài Đặt Tài Khoản Chung -->
+                <div class="settings-card">
+                    <h2 class="card-title">Cài Đặt Tài Khoản Chung</h2>
+                    
+                    <div class="setting-row">
+                        <div class="setting-label">Tên</div>
+                        <div class="setting-actions">
+                            <input type="text" class="value-pill" value="Nhat" readonly>
+                            <button class="btn-green">Chỉnh sửa</button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-row">
+                        <div class="setting-label">Tên đăng nhập</div>
+                        <div class="setting-actions">
+                            <input type="text" class="value-pill" value="AnhNhat" readonly>
+                            <button class="btn-green">Chỉnh sửa</button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-row">
+                        <div class="setting-label">Email</div>
+                        <div class="setting-actions">
+                            <input type="text" class="value-pill" value="Nhat@gmail.com" readonly>
+                            <button class="btn-green">Chỉnh sửa</button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-row">
+                        <div class="setting-label">Số điện thoại</div>
+                        <div class="setting-actions">
+                            <input type="text" class="value-pill" value="0123456789" readonly>
+                            <button class="btn-green">Chỉnh sửa</button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-row">
+                        <div class="setting-label">Mật khẩu</div>
+                        <div class="setting-actions">
+                            <input type="password" class="value-pill" value="*********" readonly style="letter-spacing: 2px;">
+                            <button class="btn-green">Thay đổi</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Cài Đặt Riêng Tư -->
+                <div class="settings-card">
+                    <h2 class="card-title">Cài Đặt Riêng Tư</h2>
+                    
+                    <div class="setting-row setting-row-2col">
+                        <div class="setting-label">Ai có thể xem bài viết của bạn?</div>
+                        <div class="setting-actions">
+                            <button class="btn-dropdown">Bạn bè <i class="fa-solid fa-chevron-down"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-row setting-row-2col">
+                        <div class="setting-label">Ai có thể gửi lời mời kết bạn?</div>
+                        <div class="setting-actions">
+                            <button class="btn-dropdown">Mọi người <i class="fa-solid fa-chevron-down"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-row setting-row-2col">
+                        <div class="setting-label">Ai có thể xem danh sách bạn bè của bạn?</div>
+                        <div class="setting-actions">
+                            <button class="btn-dropdown">Chỉ mình tôi <i class="fa-solid fa-chevron-down"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Bảo Mật -->
+                <div class="settings-card">
+                    <h2 class="card-title">Bảo Mật</h2>
+                    
+                    <div class="setting-row setting-row-2col">
+                        <div class="setting-label">Cảnh báo đăng nhập</div>
+                        <div class="setting-actions">
+                            <button class="btn-dropdown" style="min-width: 90px;">Bật <i class="fa-solid fa-chevron-down"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+</body>
+</html>
