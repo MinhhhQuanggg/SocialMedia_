@@ -1,217 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Login • Gummy</title>
+<title>Đăng nhập | Gummy</title>
 <link rel="stylesheet" href="css/ui.css">
-
-<!-- Poppins font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="css/login.css">
 <style>
   body {
-    background: #F7F7F7; /* Removed gradient */
+    background: linear-gradient(180deg, #f9f4fb 0%, #f7f7f7 100%);
+    min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .auth-page {
+    width: min(420px, 100%);
+    background: rgba(255,255,255,0.96);
+    padding: 36px 30px 30px;
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+    position: relative;
+  }
+
+  .auth-title {
     font-family: 'Poppins', sans-serif;
-  }
-
-  .login-container {
-    text-align: center;
-  }
-
-  .logo-big {
     font-size: 60px;
     font-weight: 700;
+    text-align: center;
     color: #E88DB5;
-    margin-bottom: 20px;
+    margin: 0 0 18px;
   }
 
-  .login-box {
-    width: 380px;
-    background: white;
-    padding: 25px;
-    border-radius: 18px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-    animation: fadeIn 0.6s ease;
+  .auth-subtitle {
+    text-align: center;
+    color: #777;
+    margin-bottom: 34px;
+    font-size: 15px;
   }
 
-  @keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(10px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-
-  .input {
+  .auth-input {
     width: 100%;
-    padding: 14px;
-    border: 1px solid #dcdcdc;
-    border-radius: 12px;
-    margin-bottom: 14px;
-    font-size: 16px;
-    background: #FFFFFF;
-    transition: 0.25s;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid #e3e3e3;
+    background: #fafafa;
+    margin-bottom: 22px;
+    font-size: 15px;
+    color: #333;
+    outline: none;
+    transition: all 0.2s ease;
   }
 
-  .input:focus {
-    border-color: #B7EBD6;
-    box-shadow: 0 0 0 3px rgba(183,235,214,0.4);
+  .auth-input:focus {
+    border-color: rgba(110, 198, 165, 0.9);
+    box-shadow: 0 0 0 5px rgba(183,235,214,0.25);
   }
 
-  .btn-login {
+  .auth-button {
     width: 100%;
-    padding: 14px;
+    padding: 14px 16px;
     border: none;
-    border-radius: 10px;
-    background: #B7EBD6;
-    color: #3f5f56;
-    font-size: 18px;
+    border-radius: 18px;
+    background: #85c79d;
+    color: #0f4626;
+    font-size: 17px;
     font-weight: 700;
     cursor: pointer;
-    margin-bottom: 12px;
-    transition: 0.25s;
+    transition: transform 0.2s ease, background 0.2s ease;
   }
 
-  .btn-login:hover {
-    background: #AEE4CD;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  .auth-button:hover {
+    transform: translateY(-1px);
+    background: #7bc48a;
   }
 
-  .forgot {
-    color: #A67E9B;
+  .auth-link-wrap {
+    text-align: center;
+    margin-top: 22px;
+    color: #666;
     font-size: 14px;
-    font-weight: 600;
   }
 
-  .line {
-    height: 1px;
-    background: #e7dede;
-    margin: 20px 0;
+  .auth-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 12px 20px;
+    border-radius: 18px;
+    border: 1px solid #c1e8d4;
+    color: #2d7f56;
+    font-weight: 700;
+    background: #f4fbf7;
   }
 
-  .btn-new {
-    background: white;
-    color: #4DB49F;
-    padding: 14px;
-    width: 70%;
-    border-radius: 10px;
-    font-size: 17px;
-    border: 2px solid #6CC9AE;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.25s;
+  .auth-link:hover {
+    background: #e8f7ee;
   }
-
-  .btn-new:hover {
-    background: #E8FFF6;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 12px rgba(0,0,0,0.15);
-  }
-
-  /* Toast notification */
-  .toast-container {
-    position: fixed !important;
-    top: 20px !important;
-    right: 20px !important;
-    z-index: 99999 !important;
-    pointer-events: none !important;
-  }
-
-  .toast {
-    background: white !important;
-    padding: 16px 20px !important;
-    border-radius: 12px !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-    margin-bottom: 10px !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-    min-width: 300px !important;
-    pointer-events: auto !important;
-    opacity: 1 !important;
-    transform: translateX(0) !important;
-    animation: slideIn 0.3s ease forwards !important;
-  }
-
-  @keyframes slideIn {
-    from {
-      transform: translateX(400px);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-
-  .toast.success {
-    border-left: 4px solid #4DB49F;
-  }
-
-  .toast.success .toast-icon {
-    color: #4DB49F;
-  }
-
-  .toast.error {
-    border-left: 4px solid #E88DB5;
-  }
-
-  .toast.error .toast-icon {
-    color: #E88DB5;
-  }
-
-  .toast-icon {
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  .toast-message {
-    flex: 1;
-    font-size: 14px;
-    color: #333;
-  }
-
 </style>
 </head>
-
 <body>
+  <div class="auth-title">GUMMY</div>
+  <div class="auth-page">
+    <div class="auth-subtitle">Đăng nhập để tiếp tục kết nối với thế giới ngọt ngào.</div>
 
-<div class="toast-container" id="toastContainer"></div>
-
-<div class="login-container">
-  <div class="logo-big">Gummy</div>
-
-  <div class="login-box">
-    <form id="loginForm" onsubmit="return false;">
-      <input id="username" name="username" type="text" class="input" placeholder="Email or username" autocomplete="username" required>
-      <input id="password" name="password" type="password" class="input" placeholder="Password" autocomplete="current-password" required>
-
-      <button type="submit" class="btn-login">Log In</button>
-
-      <a href="#" class="forgot">Forgot password?</a>
-
-      <div class="line"></div>
-
-      <button type="button" class="btn-new" onclick="location.href='register.html'">
-        Create a Gummy Account
-      </button>
+    <form id="loginForm">
+      <input id="username" class="auth-input" type="text" placeholder="Email hoặc số điện thoại" autocomplete="username">
+      <input id="password" class="auth-input" type="password" placeholder="Mật khẩu" autocomplete="current-password">
+      <button type="submit" class="auth-button">Login</button>
     </form>
-  </div>
-</div>
 
-<script src="config.js"></script>
-<script src="js/api/api.base.js"></script>
-<script src="js/auth-shared.js"></script>
-<script src="js/pages/auth.js"></script>
-<script>
-// Test toast immediately on page load
-window.addEventListener('DOMContentLoaded', function() {
-  console.log("Page loaded, testing toast...");
-  // Uncomment below to test toast on page load
-  // setTimeout(() => showToast("Test toast!", "error"), 1000);
-});
-</script>
+    <div class="auth-link-wrap">
+      <a class="auth-link" href="register.html">Tạo tài khoản Gummy</a>
+    </div>
+  </div>
+
+  <script src="js/auth-shared.js"></script>
+  <script src="js/pages/auth.js"></script>
 </body>
 </html>
