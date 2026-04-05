@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Điều Khoản & Chính Sách Bảo Mật • Gummy</title>
     <meta name="description" content="Điều khoản dịch vụ và chính sách bảo mật của mạng xã hội Gummy.">
-
     <link rel="stylesheet" href="css/ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -16,67 +15,48 @@
             font-family: 'Noto Sans', sans-serif;
         }
 
-        /* ===== TERMS CONTENT WRAPPER ===== */
         .terms-content {
             flex: 1;
             max-width: 820px;
             padding-bottom: 40px;
         }
 
-        /* ===== PAGE HEADER ===== */
-        .terms-header {
-            margin-bottom: 28px;
-        }
-
+        /* Page title */
         .terms-header h1 {
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--gummy-pink, #E88DB5) 0%, #D45B9A 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 0 0 6px 0;
-            letter-spacing: 0.5px;
+            color: #E88DB5;
+            margin: 0 0 24px;
+            letter-spacing: 0.3px;
         }
 
-        .terms-header .last-updated {
-            font-size: 13px;
-            color: #999;
-        }
-
-        /* ===== SECTION CARD ===== */
+        /* Section card */
         .terms-section {
             background: white;
-            border-radius: 16px;
+            border-radius: 12px;
             margin-bottom: 20px;
             overflow: hidden;
-            box-shadow: 0 2px 12px rgba(232, 141, 181, 0.08);
+            box-shadow: 0 2px 10px rgba(232, 141, 181, 0.08);
             border: 1px solid rgba(232, 141, 181, 0.08);
-            transition: box-shadow 0.25s ease;
         }
 
-        .terms-section:hover {
-            box-shadow: 0 4px 20px rgba(232, 141, 181, 0.14);
-        }
-
-        /* ===== SECTION HEADING (Pink Bar) ===== */
+        /* Section heading — pink gradient bar */
         .terms-section-title {
             display: flex;
             align-items: center;
             gap: 12px;
-            background: linear-gradient(135deg, var(--gummy-pink, #E88DB5) 0%, #e07ab0 100%);
+            background: linear-gradient(135deg, #E88DB5 0%, #e07ab0 100%);
             color: white;
-            padding: 14px 20px;
-            font-size: 16px;
+            padding: 13px 18px;
+            font-size: 15px;
             font-weight: 700;
-            letter-spacing: 0.3px;
         }
 
-        .terms-section-title .section-icon {
-            font-size: 18px;
+        .section-icon {
+            font-size: 16px;
             background: rgba(255, 255, 255, 0.22);
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -84,17 +64,17 @@
             flex-shrink: 0;
         }
 
-        /* ===== SECTION BODY ===== */
+        /* Section body */
         .terms-section-body {
-            padding: 18px 22px;
+            padding: 16px 20px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
         }
 
-        /* ===== ITEM ===== */
+        /* Item */
         .terms-item {
-            padding-bottom: 14px;
+            padding-bottom: 12px;
             border-bottom: 1px solid rgba(232, 141, 181, 0.07);
         }
 
@@ -103,8 +83,8 @@
             border-bottom: none;
         }
 
-        .terms-item .item-label {
-            font-size: 14px;
+        .item-label {
+            font-size: 13.5px;
             font-weight: 700;
             color: #333;
             margin-bottom: 5px;
@@ -117,27 +97,27 @@
             margin: 0;
         }
 
-        /* ===== CONTACT CARD ===== */
+        /* Contact card */
         .terms-contact-card {
-            background: linear-gradient(135deg, rgba(183, 235, 214, 0.15) 0%, rgba(232, 141, 181, 0.12) 100%);
+            background: linear-gradient(135deg, rgba(183, 235, 214, 0.15), rgba(232, 141, 181, 0.1));
             border: 1px solid rgba(183, 235, 214, 0.3);
-            border-radius: 14px;
-            padding: 18px 22px;
+            border-radius: 12px;
+            padding: 16px 20px;
             margin-bottom: 20px;
             display: flex;
             align-items: flex-start;
             gap: 14px;
         }
 
-        .terms-contact-card .contact-icon {
+        .contact-icon {
             font-size: 22px;
             margin-top: 2px;
             flex-shrink: 0;
-            color: var(--gummy-pink, #E88DB5);
+            color: #E88DB5;
         }
 
         .terms-contact-card h3 {
-            margin: 0 0 6px;
+            margin: 0 0 5px;
             font-size: 15px;
             font-weight: 700;
             color: #333;
@@ -151,7 +131,7 @@
         }
 
         .terms-contact-card a {
-            color: var(--gummy-pink, #E88DB5);
+            color: #E88DB5;
             font-weight: 600;
             text-decoration: none;
         }
@@ -163,161 +143,130 @@
 </head>
 
 <body>
-
-    <!-- ⭐ PAGE LAYOUT (Navbar + Sidebar được inject bởi shared-layout.js) -->
     <div class="layout-premium">
-
-        <!-- ⭐ MAIN CONTENT -->
         <div class="terms-content">
 
-            <!-- PAGE HEADER -->
             <div class="terms-header">
                 <h1>ĐIỀU KHOẢN &amp; CHÍNH SÁCH BẢO MẬT GUMMY</h1>
             </div>
 
-            <!-- ====================================== -->
-            <!-- SECTION 1: CHÍNH SÁCH BẢO MẬT          -->
-            <!-- ====================================== -->
+            <!-- 1. CHÍNH SÁCH BẢO MẬT -->
             <div class="terms-section">
                 <div class="terms-section-title">
                     <div class="section-icon"><i class="fas fa-lock"></i></div>
                     1. CHÍNH SÁCH BẢO MẬT
                 </div>
                 <div class="terms-section-body">
-
                     <div class="terms-item">
                         <div class="item-label">a. Giới thiệu</div>
                         <p>Gummy cam kết bảo vệ thông tin cá nhân của bạn. Chính sách bảo mật này mô tả cách chúng tôi
                             thu thập, sử dụng và bảo vệ thông tin khi bạn sử dụng nền tảng mạng xã hội Gummy.</p>
                     </div>
-
                     <div class="terms-item">
                         <div class="item-label">b. Thông tin chúng tôi thu thập</div>
                         <p>Chúng tôi thu thập các thông tin bạn cung cấp trực tiếp như tên, email, ảnh đại diện, bài
                             viết và nội dung bạn chia sẻ. Ngoài ra, chúng tôi thu thập dữ liệu sử dụng như thiết bị, địa
                             chỉ IP, thời gian truy cập và các tương tác trong ứng dụng.</p>
                     </div>
-
                     <div class="terms-item">
                         <div class="item-label">c. Cách chúng tôi sử dụng thông tin</div>
                         <p>Thông tin thu thập được dùng để cải thiện dịch vụ, cá nhân hóa nội dung hiển thị, đảm bảo an
                             toàn tài khoản, gửi thông báo liên quan và cung cấp hỗ trợ kỹ thuật khi cần thiết.</p>
                     </div>
-
                     <div class="terms-item">
                         <div class="item-label">d. Chia sẻ thông tin</div>
                         <p>Gummy không bán thông tin cá nhân của bạn cho bên thứ ba. Chúng tôi chỉ chia sẻ thông tin khi
                             có yêu cầu pháp lý hoặc được sự đồng ý rõ ràng từ phía bạn. Các đối tác dịch vụ của chúng
                             tôi đều tuân thủ chính sách bảo mật nghiêm ngặt.</p>
                     </div>
-
                     <div class="terms-item">
                         <div class="item-label">e. Bảo mật dữ liệu</div>
                         <p>Chúng tôi áp dụng các biện pháp bảo mật kỹ thuật tiêu chuẩn ngành để bảo vệ thông tin của
                             bạn, bao gồm mã hóa dữ liệu truyền tải (HTTPS), mã hóa mật khẩu (BCrypt) và giám sát bất
                             thường liên tục.</p>
                     </div>
-
                 </div>
             </div>
 
-            <!-- ====================================== -->
-            <!-- SECTION 2: ĐIỀU KHOẢN DỊCH VỤ         -->
-            <!-- ====================================== -->
+            <!-- 2. ĐIỀU KHOẢN DỊCH VỤ -->
             <div class="terms-section">
                 <div class="terms-section-title">
                     <div class="section-icon"><i class="fas fa-file-contract"></i></div>
                     2. ĐIỀU KHOẢN DỊCH VỤ
                 </div>
                 <div class="terms-section-body">
-
                     <div class="terms-item">
                         <div class="item-label">a. Thỏa thuận sử dụng</div>
                         <p>Bằng việc đăng ký và sử dụng Gummy, bạn đồng ý với toàn bộ điều khoản dịch vụ này. Nếu bạn
                             không đồng ý với bất kỳ phần nào, vui lòng không sử dụng nền tảng của chúng tôi.</p>
                     </div>
-
                     <div class="terms-item">
                         <div class="item-label">b. Nội dung của bạn</div>
                         <p>Bạn sở hữu nội dung mình tạo ra trên Gummy. Tuy nhiên, bằng cách đăng nội dung, bạn cấp cho
                             Gummy quyền sử dụng, hiển thị và phân phối nội dung đó trong phạm vi hoạt động của nền tảng.
                         </p>
                     </div>
-
                     <div class="terms-item">
                         <div class="item-label">c. Hành vi cấm</div>
                         <p>Nghiêm cấm đăng nội dung xúc phạm, phân biệt đối xử, bạo lực, khiêu dâm hoặc vi phạm bản
                             quyền. Nghiêm cấm spam, lừa đảo, hoặc bất kỳ hành vi nào gây hại cho người dùng khác và cộng
                             đồng Gummy.</p>
                     </div>
-
                     <div class="terms-item">
                         <div class="item-label">d. Thay đổi điều khoản</div>
                         <p>Gummy có quyền cập nhật điều khoản dịch vụ định kỳ. Chúng tôi sẽ thông báo cho bạn qua email
                             hoặc thông báo trong ứng dụng về các thay đổi quan trọng. Việc tiếp tục sử dụng dịch vụ sau
                             khi thay đổi được coi là bạn đã chấp nhận điều khoản mới.</p>
                     </div>
-
                 </div>
             </div>
 
-            <!-- ====================================== -->
-            <!-- SECTION 3: QUYỀN CỦA NGƯỜI DÙNG       -->
-            <!-- ====================================== -->
+            <!-- 3. QUYỀN CỦA NGƯỜI DÙNG -->
             <div class="terms-section">
                 <div class="terms-section-title">
                     <div class="section-icon"><i class="fas fa-user-shield"></i></div>
                     3. QUYỀN CỦA NGƯỜI DÙNG
                 </div>
                 <div class="terms-section-body">
-
                     <div class="terms-item">
                         <div class="item-label">a. Quyền truy cập và chỉnh sửa</div>
                         <p>Bạn có quyền truy cập, chỉnh sửa và cập nhật thông tin cá nhân của mình bất cứ lúc nào thông
                             qua trang Cài Đặt của tài khoản.</p>
                     </div>
-
                     <div class="terms-item">
                         <div class="item-label">b. Quyền xóa dữ liệu</div>
                         <p>Bạn có quyền yêu cầu xóa tài khoản và toàn bộ dữ liệu liên quan. Sau khi xóa, dữ liệu sẽ được
                             loại bỏ hoàn toàn khỏi hệ thống trong vòng 30 ngày.</p>
                     </div>
-
                     <div class="terms-item">
                         <div class="item-label">c. Quyền kiểm soát quyền riêng tư</div>
                         <p>Bạn có thể kiểm soát ai có thể xem bài viết, danh sách bạn bè và thông tin cá nhân của bạn
                             thông qua phần Cài Đặt Riêng Tư trong ứng dụng.</p>
                     </div>
-
                 </div>
             </div>
 
-            <!-- ====================================== -->
-            <!-- SECTION 4: COOKIE & TRACKING           -->
-            <!-- ====================================== -->
+            <!-- 4. COOKIE & THEO DÕI -->
             <div class="terms-section">
                 <div class="terms-section-title">
                     <div class="section-icon"><i class="fas fa-cookie-bite"></i></div>
                     4. COOKIE &amp; THEO DÕI
                 </div>
                 <div class="terms-section-body">
-
                     <div class="terms-item">
                         <div class="item-label">a. Sử dụng Cookie</div>
                         <p>Gummy sử dụng token JWT lưu trong localStorage để duy trì phiên đăng nhập của bạn. Chúng tôi
                             không sử dụng cookie theo dõi quảng cáo của bên thứ ba.</p>
                     </div>
-
                     <div class="terms-item">
                         <div class="item-label">b. Dữ liệu phân tích</div>
                         <p>Chúng tôi thu thập dữ liệu sử dụng ẩn danh để cải thiện hiệu suất ứng dụng và trải nghiệm
                             người dùng. Dữ liệu này không được liên kết với thông tin cá nhân có thể nhận dạng.</p>
                     </div>
-
                 </div>
             </div>
 
-            <!-- CONTACT BANNER -->
+            <!-- Contact banner -->
             <div class="terms-contact-card">
                 <div class="contact-icon"><i class="fas fa-envelope-open-text"></i></div>
                 <div>
@@ -325,26 +274,20 @@
                     <p>
                         Nếu bạn có câu hỏi về Điều Khoản hoặc Chính Sách Bảo Mật, vui lòng liên hệ qua email:
                         <a href="mailto:support@gummy.social">support@gummy.social</a>
-                        hoặc truy cập trang <a href="settings.html">Cài Đặt</a> để quản lý quyền riêng tư của bạn.
+                        hoặc truy cập trang <a href="settings.html">Cài Đặt</a> để quản lý quyền riêng tư.
                     </p>
                 </div>
             </div>
 
         </div>
-        <!-- END MAIN CONTENT -->
-
     </div>
-    <!-- END LAYOUT -->
 
-
-    <!-- ⭐ JAVASCRIPT (same pattern as settings.html) -->
     <script src="config.js"></script>
     <script src="js/api/api.base.js"></script>
     <script src="js/api/api.users.js"></script>
     <script src="js/api/api.chat.js"></script>
     <script src="js/notification-manager.js"></script>
     <script src="js/shared-layout.js"></script>
-
 </body>
 
 </html>
