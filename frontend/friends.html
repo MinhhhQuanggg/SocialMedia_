@@ -1,147 +1,516 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<title>Friends • Gummy</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gummy - Bạn bè</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-header: #ffffff;
+            --bg-body: #ffffff;
+            --bg-sidebar: #e9e9eb;
+            --primary-pink: #ef4f91;
+            --text-dark: #111;
+            --text-muted: #555;
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
 
-<link rel="stylesheet" href="css/ui.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+        }
 
-<style>
-/* === CARD LAYOUT === */
-.friends-card {
-    background: white;
-    border-radius: 18px;
-    padding: 20px;
-    margin-bottom: 25px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-}
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            height: 70px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background-color: var(--bg-header);
+            position: relative;
+            z-index: 100;
+        }
 
-/* SECTION TITLES */
-.friends-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--gummy-pink);
-    margin-bottom: 15px;
-}
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary-pink);
+            letter-spacing: -0.5px;
+            width: 200px;
+            font-family: 'Arial Black', sans-serif;
+        }
 
-/* USER ITEM */
-.friend-item {
-    display: flex;
-    gap: 15px;
-    padding: 12px;
-    border-radius: 12px;
-    transition: 0.25s;
-    cursor: pointer;
-}
+        .search-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+        }
 
-.friend-item:hover {
-    background: #f5f5f5;
-}
+        .search-bar {
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+        }
 
-.friend-avatar {
-    width: 70px;
-    height: 70px;
-    border-radius: 14px;
-    object-fit: cover;
-}
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border-radius: 25px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            font-size: 15px;
+            box-sizing: border-box;
+            outline: none;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.02);
+        }
 
-.friend-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-size: 15px;
-}
+        .search-bar i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 16px;
+        }
 
-/* NAME */
-.friend-name {
-    font-weight: 700;
-    margin-bottom: 4px;
-}
+        .header-icons {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            width: 200px;
+            justify-content: flex-end;
+        }
 
-/* Mutual friends */
-.mutual {
-    font-size: 13px;
-    color: #666;
-}
+        .header-icons i {
+            font-size: 20px;
+            color: #333;
+            cursor: pointer;
+        }
 
-/* BUTTONS */
-.friend-btn {
-    padding: 6px 14px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    margin-right: 8px;
-    margin-top: 6px;
-    font-size: 14px;
-}
+        .main-container {
+            display: flex;
+            padding: 20px 20px;
+            gap: 20px;
+            min-height: calc(100vh - 70px);
+            box-sizing: border-box;
+            background-color: #ffffff;
+        }
 
-.btn-confirm {
-    background: var(--gummy-mint);
-}
+        /* Sidebar Left */
+        .sidebar-left {
+            width: 210px;
+            background-color: var(--bg-sidebar);
+            border-radius: 12px;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-.btn-delete {
-    background: #eee;
-}
+        .nav-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 10px;
+        }
 
-.btn-add {
-    background: var(--gummy-pink);
-    color: white;
-}
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            border-radius: 25px;
+            background-color: #fff;
+            color: #222;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
 
-/* RIGHT SIDEBAR TIPS */
-.friend-tips li {
-    margin-bottom: 6px;
-}
-</style>
+        .nav-item i {
+            width: 20px;
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-right: 12px;
+            text-align: center;
+        }
+
+        .nav-item.active {
+            background-color: #aae0c2;
+            color: #0b6038;
+        }
+
+        .nav-item.active i {
+            color: #0b6038;
+        }
+
+        .sidebar-footer {
+            padding: 0 10px;
+        }
+
+        .terms-btn {
+            background-color: #faedf2;
+            color: #ab7f94;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Center Content */
+        .content-center {
+            flex: 1;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #c96f95;
+            /* Text pink header */
+            margin: 10px 0 15px 0;
+        }
+
+        .cards-grid {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .friend-card {
+            width: 190px;
+            background-color: #ebebeb;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .friend-card-img {
+            height: 140px;
+            width: 100%;
+            background-color: #ccc;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .friend-card-info {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fc-name {
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 3px;
+            color: #111;
+        }
+
+        .fc-mutual {
+            font-size: 10px;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .fc-btn {
+            border: none;
+            border-radius: 6px;
+            padding: 8px 0;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .fc-btn:last-child {
+            margin-bottom: 0;
+        }
+
+        .fc-btn.pink {
+            background-color: #f2569c;
+        }
+
+        .fc-btn.grey {
+            background-color: #6a6a6a;
+        }
+
+        .center-divider {
+            height: 1px;
+            background-color: #111;
+            margin: 5px 0 20px 0;
+        }
+
+        /* Sidebar Right */
+        .sidebar-right {
+            width: 250px;
+            background-color: #ffffff;
+            padding: 10px 0 10px 10px;
+            box-sizing: border-box;
+        }
+
+        .right-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #111;
+        }
+
+        .right-divider {
+            height: 1.5px;
+            background-color: #333;
+            margin-bottom: 25px;
+        }
+
+        .friend-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .friend-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .friend-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            margin-right: 15px;
+            background-color: #eee;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .friend-name {
+            flex: 1;
+            font-weight: 800;
+            font-size: 13px;
+            color: #111;
+        }
+
+        .friend-action {
+            color: #333;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- MAIN LAYOUT (Shared layout injected by shared-layout.js) -->
-<div class="layout-premium">
+    <div class="header">
+        <div class="logo">GUMMY</div>
+        <div class="search-wrapper">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="">
+            </div>
+        </div>
+        <div class="header-icons">
+            <i class="fa-regular fa-bell"></i>
+            <i class="fa-regular fa-comment-dots"></i>
+            <i class="fa-regular fa-circle-user"></i>
+        </div>
+    </div>
 
+    <div class="main-container">
 
-    <!-- CENTER COLUMN -->
-    <div class="center-feed-premium">
-
-        <!-- FRIEND REQUESTS -->
-        <div class="friends-card">
-            <div class="friends-title">Lời mời kết bạn</div>
-            <div id="pending-requests-container">
-                <!-- Dynamic content loaded from backend -->
+        <div class="sidebar-left">
+            <div class="nav-list">
+                <div class="nav-item">
+                    <i class="fa-solid fa-house"></i> Bảng tin
+                </div>
+                <div class="nav-item">
+                    <i class="fa-regular fa-user"></i> Hồ sơ của tôi
+                </div>
+                <div class="nav-item active">
+                    <i class="fa-solid fa-users"></i> Bạn bè
+                </div>
+                <div class="nav-item">
+                    <i class="fa-solid fa-people-group"></i> Cộng đồng
+                </div>
+                <div class="nav-item">
+                    <i class="fa-regular fa-images"></i> Phương tiện
+                </div>
+                <div class="nav-item">
+                    <i class="fa-solid fa-gear"></i> Cài đặt
+                </div>
+                <div class="nav-item">
+                    <i class="fa-regular fa-calendar"></i> Sự Kiện
+                </div>
+                <div class="nav-item">
+                    <i class="fa-regular fa-folder"></i> Kho lưu trữ
+                </div>
+                <div class="nav-item">
+                    <i class="fa-solid fa-gamepad"></i> Game
+                </div>
+                <div class="nav-item">
+                    <i class="fa-solid fa-shield-halved"></i> Báo cáo & khiếu nại
+                </div>
+                <div class="nav-item">
+                    <i class="fa-solid fa-circle-info"></i> Trung tâm trợ giúp
+                </div>
+                <div class="nav-item">
+                    <i class="fa-solid fa-earth-americas"></i> Thanh toán
+                </div>
+            </div>
+            <div class="sidebar-footer">
+                <div class="terms-btn">
+                    <i class="fa-solid fa-file-contract"></i> Điều Khoản & Bảo Mật
+                </div>
             </div>
         </div>
 
-        <!-- PEOPLE YOU MAY KNOW -->
-        <div class="friends-card">
-            <div class="friends-title">Gợi ý kết bạn</div>
-            <div id="suggestions-container">
-                <!-- Dynamic content loaded from backend -->
+        <!-- Center Content -->
+        <div class="content-center">
+
+            <div class="category-title">Lời mời kết bạn</div>
+            <div class="cards-grid">
+
+                <div class="friend-card">
+                    <div class="friend-card-img" style="background-image: url('images/daden1.png');"></div>
+                    <div class="friend-card-info">
+                        <div class="fc-name">Da Đen 1</div>
+                        <div class="fc-mutual">18 bạn chung</div>
+                        <button class="fc-btn pink">Xác nhận</button>
+                        <button class="fc-btn grey">Xóa</button>
+                    </div>
+                </div>
+
+                <div class="friend-card">
+                    <div class="friend-card-img" style="background-image: url('images/daden2.png');"></div>
+                    <div class="friend-card-info">
+                        <div class="fc-name">Da Đen 2</div>
+                        <div class="fc-mutual">36 bạn chung</div>
+                        <button class="fc-btn pink">Xác nhận</button>
+                        <button class="fc-btn grey">Xóa</button>
+                    </div>
+                </div>
+
+                <div class="friend-card">
+                    <div class="friend-card-img" style="background-image: url('images/daden3.png');"></div>
+                    <div class="friend-card-info">
+                        <div class="fc-name">Da Đen 3</div>
+                        <div class="fc-mutual">18 bạn chung</div>
+                        <button class="fc-btn pink">Xác nhận</button>
+                        <button class="fc-btn grey">Xóa</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="center-divider"></div>
+
+            <div class="category-title">Gợi ý kết bạn</div>
+            <div class="cards-grid">
+
+                <div class="friend-card">
+                    <div class="friend-card-img" style="background-image: url('images/bamiadetem.png');"></div>
+                    <div class="friend-card-info">
+                        <div class="fc-name">Bã Mía Đè Tem</div>
+                        <div class="fc-mutual">36 bạn chung</div>
+                        <button class="fc-btn pink">Thêm bạn bè</button>
+                        <button class="fc-btn grey">Gỡ</button>
+                    </div>
+                </div>
+
+                <div class="friend-card">
+                    <div class="friend-card-img" style="background-image: url('images/khogaloai2.png');"></div>
+                    <div class="friend-card-info">
+                        <div class="fc-name">Khô Gà Loại 2</div>
+                        <div class="fc-mutual">18 bạn chung</div>
+                        <button class="fc-btn pink">Thêm bạn bè</button>
+                        <button class="fc-btn grey">Gỡ</button>
+                    </div>
+                </div>
+
+                <div class="friend-card">
+                    <div class="friend-card-img" style="background-image: url('images/ngohihi.png');"></div>
+                    <div class="friend-card-info">
+                        <div class="fc-name">Ngộ Hi Hi</div>
+                        <div class="fc-mutual">36 bạn chung</div>
+                        <button class="fc-btn pink">Thêm bạn bè</button>
+                        <button class="fc-btn grey">Gỡ</button>
+                    </div>
+                </div>
+
+                <div class="friend-card">
+                    <div class="friend-card-img" style="background-image: url('images/chuataydau.png');"></div>
+                    <div class="friend-card-info">
+                        <div class="fc-name">Chưa Tày Đâu</div>
+                        <div class="fc-mutual">18 bạn chung</div>
+                        <button class="fc-btn pink">Thêm bạn bè</button>
+                        <button class="fc-btn grey">Gỡ</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Sidebar Right -->
+        <div class="sidebar-right">
+            <div class="right-title">Danh sách bạn bè</div>
+            <div class="right-divider"></div>
+            <div class="friend-list">
+
+                <div class="friend-item">
+                    <div class="friend-avatar" style="background-image: url('images/truongson.png');"></div>
+                    <div class="friend-name">Trường Sơn</div>
+                    <i class="fa-solid fa-ellipsis friend-action"></i>
+                </div>
+
+                <div class="friend-item">
+                    <div class="friend-avatar" style="background-image: url('images/minhquang.png');"></div>
+                    <div class="friend-name">Minh Quang</div>
+                    <i class="fa-solid fa-ellipsis friend-action"></i>
+                </div>
+
+                <div class="friend-item">
+                    <div class="friend-avatar" style="background-image: url('images/anhnhat.png');"></div>
+                    <div class="friend-name">Anh Nhật</div>
+                    <i class="fa-solid fa-ellipsis friend-action"></i>
+                </div>
+
+                <div class="friend-item">
+                    <div class="friend-avatar" style="background-image: url('images/manhthuy.png');"></div>
+                    <div class="friend-name">Mạnh Thủy</div>
+                    <i class="fa-solid fa-ellipsis friend-action"></i>
+                </div>
+
+                <div class="friend-item">
+                    <div class="friend-avatar" style="background-image: url('images/kimngan.png');"></div>
+                    <div class="friend-name">Kim Ngân</div>
+                    <i class="fa-solid fa-ellipsis friend-action"></i>
+                </div>
+
+                <div class="friend-item">
+                    <div class="friend-avatar" style="background-image: url('images/duytri.png');"></div>
+                    <div class="friend-name">Duy Trí</div>
+                    <i class="fa-solid fa-ellipsis friend-action"></i>
+                </div>
+
             </div>
         </div>
 
     </div>
 
-
-    <!-- RIGHT SIDEBAR -->
-    <div class="profile-right">
-        <div class="friends-card">
-            <h3 class="card-title">Danh sách bạn bè</h3>
-            <div id="friends-list-container">
-                <!-- Friends list loaded from backend -->
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<script src="config.js"></script>
-<script src="js/api/api.base.js"></script>
-<script src="js/api/api.users.js"></script>
-<script src="js/api/api.chat.js"></script>
-<script src="js/api/api.friends.js"></script>
-<script src="js/shared-layout.js"></script>
-<script src="js/pages/friends.js"></script>
 </body>
+
 </html>

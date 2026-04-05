@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUMMY Search</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f7f5f2;
+            --panel: #ffffff;
+            --panel-soft: #ececec;
+            --surface-mid: #d8d8d8;
+            --mint: #a9ebd3;
+            --mint-strong: #92e89d;
+            --logo: #f03aa7;
+            --text: #171717;
+            --muted: #666666;
+            --line: rgba(0, 0, 0, 0.12);
+            --shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+            --round-xl: 26px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Be Vietnam Pro", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(169, 235, 211, 0.26), transparent 22%),
+                radial-gradient(circle at right center, rgba(255, 187, 220, 0.18), transparent 20%),
+                linear-gradient(180deg, #fcfbf9 0%, var(--bg-main) 100%);
+        }
+
+        .search-page {
+            min-height: 100vh;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: auto minmax(280px, 1fr) auto;
+            align-items: center;
+            gap: 22px;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .brand {
+            margin: 0;
+            font-size: 2.9rem;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.06em;
+            color: var(--logo);
+        }
+
+        .search-shell {
+            position: relative;
+            width: 100%;
+            max-width: 910px;
+            justify-self: center;
+        }
+
+        .search-shell i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.55rem;
+            color: #161616;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 46px;
+            border: 1.5px solid rgba(0, 0, 0, 0.22);
+            border-radius: 999px;
+            background: #fff;
+            padding: 0 18px 0 52px;
+            outline: none;
+            box-shadow: 0 5px 14px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+        }
+
+        .top-icons {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding-right: 8px;
+        }
+
+        .icon-button {
+            width: 36px;
+            height: 36px;
+            border: 0;
+            background: transparent;
+            display: grid;
+            place-items: center;
+            color: #111;
+            font-size: 1.6rem;
+            padding: 0;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 236px minmax(420px, 1fr) 278px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .leftbar {
+            background: rgba(0, 0, 0, 0.09);
+            min-height: calc(100vh - 67px);
+            padding: 20px 14px;
+            position: sticky;
+            top: 67px;
+            width: 400px;
+        }
+
+        .route-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .route-button {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            height: 45px;
+            padding: 0 12px;
+            border-radius: 9px;
+            color: #101010;
+            text-decoration: none;
+            font-size: 0.95rem;
+            background: #fff;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+        }
+
+        .route-button.active {
+            background: var(--mint);
+        }
+
+        .route-button i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .privacy-banner {
+            margin-top: 98px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.88);
+            color: #cc8cae;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-content {
+            grid-column: 2 / 4;
+            padding: 22px 0 48px;
+        }
+
+        .results-panel {
+            background: var(--panel-soft);
+            border-radius: var(--round-xl);
+            padding: 22px 26px 28px;
+            min-height: calc(100vh - 110px);
+        }
+
+        .filter-row {
+            display: flex;
+            justify-content: center;
+            gap: 156px;
+            margin-bottom: 26px;
+            flex-wrap: wrap;
+        }
+
+        .filter-pill {
+            height: 38px;
+            padding: 0 18px;
+            border-radius: 11px;
+            border: 0;
+            background: #d2d2d2;
+            color: #191919;
+            font-size: 1.05rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-pill.active {
+            background: var(--mint);
+        }
+
+        .profile-strip {
+            max-width: 830px;
+            margin: 0 auto 26px;
+            background: var(--surface-mid);
+            border-radius: 999px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .profile-strip img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-strip span {
+            font-size: 1.12rem;
+            font-weight: 500;
+        }
+
+        .recent-card {
+            max-width: 840px;
+            margin: 0 auto;
+            background: var(--panel);
+            border-radius: 34px;
+            box-shadow: var(--shadow);
+            padding: 34px 34px 28px;
+        }
+
+        .recent-title {
+            font-size: 1.02rem;
+            font-weight: 500;
+            margin-bottom: 34px;
+        }
+
+        .post-card {
+            background: var(--surface-mid);
+            border-radius: 28px;
+            padding: 18px 22px 0;
+            overflow: hidden;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .post-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .post-name {
+            font-size: 1.02rem;
+            font-weight: 500;
+            margin: 0 0 4px;
+        }
+
+        .post-time {
+            font-size: 0.72rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .post-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            color: #2c2c2c;
+            font-size: 1.3rem;
+            padding-top: 4px;
+        }
+
+        .post-image {
+            display: block;
+            width: min(100%, 560px);
+            height: 380px;
+            object-fit: cover;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 1080px) {
+            .filter-row {
+                gap: 28px;
+            }
+
+            .layout {
+                grid-template-columns: 220px 1fr;
+            }
+
+            .search-content {
+                grid-column: 2;
+            }
+        }
+
+        @media (max-width: 920px) {
+            .topbar {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .brand {
+                font-size: 2.4rem;
+            }
+
+            .search-shell {
+                max-width: none;
+            }
+
+            .top-icons {
+                justify-content: flex-end;
+            }
+
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .leftbar {
+                position: static;
+                min-height: auto;
+                padding: 14px;
+            }
+
+            .route-list {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .privacy-banner {
+                margin-top: 18px;
+            }
+
+            .search-content {
+                grid-column: auto;
+                padding: 14px;
+            }
+
+            .results-panel {
+                min-height: auto;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .route-list {
+                grid-template-columns: 1fr;
+            }
+
+            .results-panel {
+                padding: 18px 14px 22px;
+            }
+
+            .recent-card {
+                padding: 22px 18px 18px;
+            }
+
+            .post-card {
+                padding: 16px 14px 0;
+            }
+
+            .filter-row {
+                gap: 14px;
+                justify-content: space-between;
+            }
+
+            .profile-strip {
+                padding: 10px 14px;
+            }
+
+            .post-image {
+                height: 260px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-page">
+        <header class="topbar">
+            <h1 class="brand">GUMMY</h1>
+
+            <label class="search-shell" aria-label="Search">
+                <i class="bi bi-search"></i>
+                <input class="search-input" type="search" placeholder="">
+            </label>
+
+            <nav class="top-icons" aria-label="Primary actions">
+                <button class="icon-button" aria-label="Notifications"><i class="bi bi-bell"></i></button>
+                <button class="icon-button" aria-label="Chat"><i class="bi bi-chat-dots"></i></button>
+                <button class="icon-button" aria-label="Profile"><i class="bi bi-person-circle"></i></button>
+            </nav>
+        </header>
+
+        <div class="layout">
+            <aside class="leftbar" aria-label="Sidebar routes">
+                <nav class="route-list">
+                    <a class="route-button" href="#"><i class="bi bi-house-door"></i><span>Bảng tin</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-person-circle"></i><span>Hồ sơ của tôi</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-people"></i><span>Bạn bè</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-people-fill"></i><span>Cộng đồng</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-image"></i><span>Phương tiện</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-gear"></i><span>Cài đặt</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-calendar-event"></i><span>Sự Kiện</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-folder"></i><span>Kho lưu trữ</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-controller"></i><span>Game</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-shield-exclamation"></i><span>Báo cáo &amp; khiếu nại</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-life-preserver"></i><span>Trung tâm trợ giúp</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-globe-asia-australia"></i><span>Thanh toán</span></a>
+                </nav>
+
+                <div class="privacy-banner"><i class="bi bi-file-earmark-lock"></i><span>Điều Khoản &amp; Bảo Mật</span></div>
+            </aside>
+
+            <main class="search-content">
+                <section class="results-panel" aria-label="Search results">
+                    <div class="filter-row">
+                        <button class="filter-pill active" type="button">Tất cả <i class="bi bi-chevron-down"></i></button>
+                        <button class="filter-pill" type="button">Bài viết</button>
+                        <button class="filter-pill" type="button">Người dùng</button>
+                    </div>
+
+                    <div class="profile-strip">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Duy Trí avatar">
+                        <span>Duy Trí</span>
+                    </div>
+
+                    <section class="recent-card">
+                        <div class="recent-title">Bài Viết Gần Đây</div>
+
+                        <article class="post-card">
+                            <div class="post-header">
+                                <div class="post-meta">
+                                    <img class="post-avatar" src="https://images.unsplash.com/photo-1521119989659-a83eee488004?auto=format&fit=crop&w=120&q=80" alt="Nguyễn Trường Sơn avatar">
+                                    <div>
+                                        <p class="post-name">Nguyễn Trường Sơn</p>
+                                        <p class="post-time">25/08/2025, 18:36:25 PM</p>
+                                    </div>
+                                </div>
+
+                                <div class="post-actions" aria-label="Post actions">
+                                    <i class="bi bi-pencil"></i>
+                                    <i class="bi bi-trash"></i>
+                                </div>
+                            </div>
+
+                            <img class="post-image" src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80" alt="Recent post image">
+                        </article>
+                    </section>
+                </section>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
