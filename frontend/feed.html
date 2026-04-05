@@ -1,635 +1,547 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="vi">
 <head>
-<meta charset="UTF-8" />
-<title>Gummy – Feed</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUMMY Feed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f7f5f2;
+            --panel: #ffffff;
+            --panel-soft: #ececec;
+            --mint: #a9ebd3;
+            --mint-strong: #92e89d;
+            --logo: #f03aa7;
+            --text: #171717;
+            --muted: #666666;
+            --line: rgba(0, 0, 0, 0.12);
+            --shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+        }
 
-<link rel="stylesheet" href="css/ui.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        * {
+            box-sizing: border-box;
+        }
 
-<style>
-/* ==========================
-   CHAT POPUP
-========================== */
-.chat-popup {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 340px;
-    background: white;
-    border-radius: 18px;
-    box-shadow: 0 6px 25px rgba(0,0,0,0.15);
-    display: none;
-    flex-direction: column;
-    z-index: 999;
-}
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Be Vietnam Pro", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(169, 235, 211, 0.26), transparent 22%),
+                radial-gradient(circle at right center, rgba(255, 187, 220, 0.18), transparent 20%),
+                linear-gradient(180deg, #fcfbf9 0%, var(--bg-main) 100%);
+        }
 
-.popup-header {
-    background: var(--gummy-mint);
-    padding: 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 600;
-    color: #333;
-    border-radius: 18px 18px 0 0;
-}
+        .feed-page {
+            min-height: 100vh;
+        }
 
-.popup-header img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: auto minmax(280px, 1fr) auto;
+            align-items: center;
+            gap: 22px;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
 
-.popup-close {
-    margin-left: auto;
-    cursor: pointer;
-    font-size: 20px;
-}
+        .brand {
+            font-size: 2.9rem;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.06em;
+            color: var(--logo);
+            margin: 0;
+        }
 
-.popup-body {
-    height: 260px;
-    padding: 10px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-}
+        .search-shell {
+            position: relative;
+            max-width: 910px;
+            width: 100%;
+            justify-self: center;
+        }
 
-.popup-msg-left {
-    max-width: 70%;
-    background: var(--gummy-mint);
-    padding: 10px 14px;
-    margin: 8px 0;
-    border-radius: 18px;
-    align-self: flex-start;
-}
+        .search-shell i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.55rem;
+            color: #161616;
+        }
 
-.popup-msg-right {
-    max-width: 70%;
-    background: var(--gummy-pink);
-    padding: 10px 14px;
-    margin: 8px 0;
-    border-radius: 18px;
-    align-self: flex-end;
-    color: white;
-}
+        .search-input {
+            width: 100%;
+            height: 46px;
+            border: 1.5px solid rgba(0, 0, 0, 0.22);
+            border-radius: 999px;
+            background: #fff;
+            padding: 0 18px 0 52px;
+            outline: none;
+            box-shadow: 0 5px 14px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+        }
 
-.popup-input {
-    display: flex;
-    gap: 10px;
-    padding: 12px;
-}
+        .top-icons {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding-right: 8px;
+        }
 
-.popup-input input {
-    flex: 1;
-    padding: 12px;
-    border-radius: 18px;
-    border: 1px solid #ccc;
-}
+        .icon-button {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border: 0;
+            background: transparent;
+            color: #111;
+            font-size: 1.6rem;
+            padding: 0;
+        }
 
-.popup-input button {
-    background: var(--gummy-pink);
-    border: none;
-    padding: 12px 14px;
-    border-radius: 14px;
-    color: white;
-    cursor: pointer;
-}
+        .layout {
+            display: grid;
+            grid-template-columns: 236px minmax(420px, 1fr) 278px;
+            gap: 24px;
+            align-items: start;
+        }
 
-/* ==========================
-   STORY VIEWER POPUP
-========================== */
-.story-viewer {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 900;
-}
+        .leftbar {
+            background: rgba(0, 0, 0, 0.09);
+            min-height: calc(100vh - 67px);
+            padding: 20px 14px;
+            position: sticky;
+            top: 67px;
+            width: 400px;
+        }
 
-.story-inner img {
-    max-width: 500px;
-    width: 90%;
-    border-radius: 14px;
-}
-/* FLOATING REACTION ICON (Facebook style) */
-.story-floating-icon {
-    position: absolute;
-    font-size: 32px;
-    animation: floatUp 1.5s ease-out forwards;
-    pointer-events: none;
-    opacity: 1;
-}
+        .route-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-@keyframes floatUp {
-    0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-    60% {
-        transform: translateY(-120px) scale(1.4);
-        opacity: 0.9;
-    }
-    100% {
-        transform: translateY(-200px) scale(1);
-        opacity: 0;
-    }
-}
+        .route-button {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            height: 45px;
+            padding: 0 12px;
+            border-radius: 9px;
+            color: #101010;
+            text-decoration: none;
+            font-size: 0.95rem;
+            background: #fff;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+        }
 
-.privacy-select {
-    margin-left: 60px;
-    margin-top: 6px;
-    padding: 6px 10px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    font-size: 14px;
-    color: #444;
-}
+        .route-button.active {
+            background: var(--mint);
+        }
 
-.reaction-wrapper {
-    position: relative;
-    display: inline-block;
-}
+        .route-button i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
 
-.reaction-box {
-    position: absolute;
-    bottom: 40px;
-    left: 0;
-    display: flex;
-    gap: 10px;
-    padding: 8px 14px;
-    background: white;
-    border-radius: 40px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.15s ease;
-    z-index: 20;
-}
+        .privacy-banner {
+            margin-top: 98px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.88);
+            color: #cc8cae;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-.reaction-wrapper:hover .reaction-box {
-    opacity: 1;
-    pointer-events: auto;
-}
+        .main-feed {
+            padding: 22px 0 48px;
+        }
 
+        .stories-row {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 52px;
+            flex-wrap: wrap;
+        }
 
-.post-actions {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 cột đều nhau */
-    gap: 6px;
-    margin-top: 10px;
-    padding: 8px 0 0;
-    border-top: 1px solid #eee;
-}
+        .story-card {
+            position: relative;
+            width: 88px;
+            height: 136px;
+            border-radius: 16px;
+            overflow: hidden;
+            flex: 0 0 auto;
+            box-shadow: var(--shadow);
+            text-decoration: none;
+            color: #fff;
+        }
 
-.post-btn {
-    background: white;
-    padding: 12px 0;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 500;
-    color: #666;
-    transition: 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px; /* icon cách chữ */
-}
+        .story-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
 
-.post-btn:hover {
-    background: #f5f5f5;
-}
+        .story-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 38%, rgba(0, 0, 0, 0.68) 100%);
+        }
 
-.post-btn.liked {
-    color: #e0245e; /* giống Facebook reaction màu hồng */
-    font-weight: 600;
-}
-/* STORY REACTION BUTTONS LIKE FACEBOOK */
+        .story-label {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            bottom: 12px;
+            z-index: 1;
+            font-size: 0.82rem;
+        }
 
+        .composer-card {
+            max-width: 550px;
+            margin: 0 auto;
+            background: var(--panel);
+            border-radius: 26px;
+            box-shadow: var(--shadow);
+            padding: 18px 20px 20px;
+        }
 
-.story-react-btn {
-    width: 52px;
-    height: 52px;
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(4px);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    cursor: pointer;
-    transition: 0.2s;
-    border: 1px solid rgba(255,255,255,0.25);
-}
+        .composer-top {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
 
-.story-react-btn:hover {
-    transform: scale(1.25);
-    background: rgba(255,255,255,0.25);
-}
-.story-inner img {
-    max-width: 430px;
-    width: 100%;
-    height: 700px;
-    object-fit: cover;
-    border-radius: 14px;
-}
-.story-close {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 38px;
-    color: white;
-    cursor: pointer;
-    z-index: 99999;
-    font-weight: bold;
-    text-shadow: 0 0 8px rgba(0,0,0,0.6);
-    transition: 0.2s;
-}
-.story-reaction-bar {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 18px;
-    z-index: 99999;
-}
+        .composer-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
 
-.story-react-btn {
-    width: 52px;
-    height: 52px;
-    background: rgba(255,255,255,0.18);
-    backdrop-filter: blur(6px);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 28px;
-    cursor: pointer;
-    transition: 0.25s;
-    border: 1px solid rgba(255,255,255,0.4);
-}
+        .composer-input {
+            height: 34px;
+            border: 0;
+            outline: none;
+            border-radius: 999px;
+            background: #d9d9d9;
+            padding: 0 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
 
-.story-react-btn:hover {
-    transform: scale(1.25);
-    background: rgba(255,255,255,0.3);
-}
+        .visibility-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 30px;
+            padding: 0 11px;
+            border-radius: 999px;
+            background: #d9d9d9;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #333;
+        }
 
-.story-close:hover {
-    transform: scale(1.2);
-}
-.comment-box {
-    padding: 10px 5px;
-    border-top: 1px solid #eee;
-    margin-top: 10px;
-}
+        .composer-tools {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 68px;
+            color: #151515;
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+        }
 
-.cmt-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 0;
-}
+        .composer-tools i:nth-child(1) {
+            color: #7ed9df;
+        }
 
-.cmt-item img {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-}
+        .composer-tools i:nth-child(3) {
+            color: #d94747;
+        }
 
-.cmt-item button {
-    margin-left: auto;
-    background: none;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    color: #777;
-}
+        .post-button {
+            display: block;
+            width: 88px;
+            height: 22px;
+            margin: 0 auto;
+            border: 0;
+            border-radius: 999px;
+            background: #aaf29e;
+            color: #5b7f4f;
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
 
-.cmt-add {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 8px;
-}
+        .rightbar {
+            padding: 26px 10px 30px 0;
+        }
 
-.cmt-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-}
+        .side-card {
+            background: var(--panel);
+            border-radius: 26px;
+            box-shadow: var(--shadow);
+            padding: 20px 22px;
+            margin-bottom: 34px;
+        }
 
-.cmt-input-wrapper {
-    flex: 1;
-}
+        .side-title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
 
-.cmt-input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 18px;
-    border: 1px solid #ccc;
-}
+        .title-rule {
+            width: 100%;
+            height: 1.5px;
+            background: rgba(0, 0, 0, 0.7);
+            margin-bottom: 14px;
+        }
 
-.cmt-btn {
-    padding: 8px 14px;
-    border-radius: 12px;
-    background: var(--gummy-pink);
-    color: white;
-    border: none;
-    cursor: pointer;
-}
+        .side-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
 
-/* Post Edit/Delete Buttons */
-.post-actions-menu {
-    display: flex;
-    gap: 8px;
-    margin-left: auto;
-}
+        .side-list li {
+            font-size: 0.92rem;
+            line-height: 1.35;
+        }
 
-.post-edit-btn,
-.post-delete {
-    background: transparent;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    color: #666;
-    transition: all 0.2s;
-    font-size: 16px;
-}
+        .active-person {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-.post-edit-btn:hover {
-    background: #e3f2fd;
-    color: #2196F3;
-}
+        .active-person img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
 
-.post-delete:hover {
-    background: #ffebee;
-    color: #f44336;
-}
+        @media (max-width: 1180px) {
+            .layout {
+                grid-template-columns: 220px 1fr;
+            }
 
-/* Inline Post Edit Container */
-.post-edit-container {
-    padding: 15px;
-    animation: slideDown 0.3s ease;
-}
+            .rightbar {
+                grid-column: 1 / -1;
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 20px;
+                padding: 0 20px 30px;
+            }
 
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+            .side-card {
+                margin-bottom: 0;
+            }
+        }
 
-.post-edit-textarea {
-    width: 100%;
-    min-height: 100px;
-    padding: 15px;
-    border: 2px solid var(--gummy-mint);
-    border-radius: 12px;
-    font-size: 15px;
-    font-family: inherit;
-    resize: vertical;
-    transition: border-color 0.2s;
-    box-sizing: border-box;
-}
+        @media (max-width: 920px) {
+            .topbar {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
 
-.post-edit-textarea:focus {
-    outline: none;
-    border-color: var(--gummy-pink);
-}
+            .brand {
+                font-size: 2.4rem;
+            }
 
-.post-edit-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-    justify-content: flex-end;
-}
+            .search-shell {
+                max-width: none;
+            }
 
-.post-edit-actions .btn-save {
-    background: var(--gummy-mint);
-    color: #3f5f56;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
+            .top-icons {
+                justify-content: flex-end;
+            }
 
-.post-edit-actions .btn-save:hover {
-    background: #AEE4CD;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
+            .layout {
+                grid-template-columns: 1fr;
+            }
 
-.post-edit-actions .btn-cancel {
-    background: #f5f5f5;
-    color: #666;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
+            .leftbar {
+                position: static;
+                min-height: auto;
+                padding: 14px;
+            }
 
-.post-edit-actions .btn-cancel:hover {
-    background: #e0e0e0;
-}
+            .route-list {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
 
-</style>
+            .privacy-banner {
+                margin-top: 18px;
+            }
 
+            .rightbar {
+                grid-template-columns: 1fr;
+                padding: 0 14px 30px;
+            }
+
+            .main-feed {
+                padding: 18px 14px 40px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .route-list {
+                grid-template-columns: 1fr;
+            }
+
+            .composer-top {
+                grid-template-columns: auto 1fr;
+            }
+
+            .visibility-pill {
+                grid-column: 1 / -1;
+                justify-self: end;
+            }
+
+            .composer-tools {
+                gap: 34px;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <div class="feed-page">
+        <header class="topbar">
+            <h1 class="brand">GUMMY</h1>
 
-<!-- ==========================
-     STORY VIEWER
-========================== -->
-<div class="story-viewer" id="storyViewer">
-        <div class="story-close" onclick="closeStory()">✕</div>
+            <label class="search-shell" aria-label="Search">
+                <i class="bi bi-search"></i>
+                <input class="search-input" type="search" placeholder="">
+            </label>
 
-    <div class="story-inner">
-        <img id="storyImage">
-    </div>
+            <nav class="top-icons" aria-label="Primary actions">
+                <button class="icon-button" aria-label="Notifications"><i class="bi bi-bell"></i></button>
+                <button class="icon-button" aria-label="Chat"><i class="bi bi-chat-dots"></i></button>
+                <button class="icon-button" aria-label="Profile"><i class="bi bi-person-circle"></i></button>
+            </nav>
+        </header>
 
-    <!-- FLOAT REACTION ZONE -->
-    <div id="storyFloatZone"></div>
+        <div class="layout">
+            <aside class="leftbar" aria-label="Sidebar routes">
+                <nav class="route-list">
+                    <a class="route-button active" href="#"><i class="bi bi-house-door"></i><span>Bảng tin</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-person-circle"></i><span>Hồ sơ của tôi</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-people"></i><span>Bạn bè</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-people-fill"></i><span>Cộng đồng</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-image"></i><span>Phương tiện</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-gear"></i><span>Cài đặt</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-calendar-event"></i><span>Sự Kiện</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-folder"></i><span>Kho lưu trữ</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-controller"></i><span>Game</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-shield-exclamation"></i><span>Báo cáo &amp; khiếu nại</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-life-preserver"></i><span>Trung tâm trợ giúp</span></a>
+                    <a class="route-button" href="#"><i class="bi bi-globe-asia-australia"></i><span>Thanh toán</span></a>
+                </nav>
 
-    <!-- Reaction bar -->
-    <div class="story-reaction-bar">
-    <div class="story-react-btn" onclick="floatStoryReaction('👍')">👍</div>
-    <div class="story-react-btn" onclick="floatStoryReaction('❤️')">❤️</div>
-    <div class="story-react-btn" onclick="floatStoryReaction('😂')">😂</div>
-    <div class="story-react-btn" onclick="floatStoryReaction('😮')">😮</div>
-    <div class="story-react-btn" onclick="floatStoryReaction('😢')">😢</div>
-</div>
+                <div class="privacy-banner"><i class="bi bi-file-earmark-lock"></i><span>Điều Khoản &amp; Bảo Mật</span></div>
+            </aside>
 
+            <main class="main-feed">
+                <section class="stories-row" aria-label="Stories">
+                    <a class="story-card" href="#">
+                        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=400&q=80" alt="Tạo tin story cover">
+                        <span class="story-label">Tạo tin</span>
+                    </a>
+                    <a class="story-card" href="#">
+                        <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=400&q=80" alt="Văn Bảo story cover">
+                        <span class="story-label">Văn Bảo</span>
+                    </a>
+                    <a class="story-card" href="#">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" alt="Anh Tú story cover">
+                        <span class="story-label">Anh Tú</span>
+                    </a>
+                    <a class="story-card" href="#">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80" alt="Kim Ngân story cover">
+                        <span class="story-label">Kim Ngân</span>
+                    </a>
+                    <a class="story-card" href="#">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80" alt="Minh Quang story cover">
+                        <span class="story-label">Minh Quang</span>
+                    </a>
+                </section>
 
-</div>
+                <section class="composer-card" aria-label="Create post">
+                    <div class="composer-top">
+                        <img class="composer-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="User avatar">
+                        <input class="composer-input" type="text" placeholder="Chia sẻ suy nghĩ của bạn...">
+                        <div class="visibility-pill"><i class="bi bi-globe-americas"></i><span>Công khai</span><i class="bi bi-caret-down-fill small"></i></div>
+                    </div>
 
-<!-- MAIN LAYOUT (Shared layout injected by shared-layout.js) -->
-<div class="layout-premium">
+                    <div class="composer-tools" aria-hidden="true">
+                        <i class="bi bi-image"></i>
+                        <i class="bi bi-emoji-smile"></i>
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
 
+                    <button class="post-button" type="button">Đăng</button>
+                </section>
+            </main>
 
-    <!-- ==========================
-         CENTER FEED
-    =========================== -->
-    <div class="center-feed-premium">
+            <aside class="rightbar" aria-label="Information panels">
+                <section class="side-card">
+                    <div class="side-title">Sự kiện</div>
+                    <div class="title-rule"></div>
+                    <ul class="side-list">
+                        <li>🪄 Hội Thảo Nghệ Thuật Ngọt Ngào</li>
+                        <li>🎉 Tiệc Gummy</li>
+                        <li>💼 Gặp Gỡ Người Sáng Tạo</li>
+                    </ul>
+                </section>
 
-        <div class="story-container">
+                <section class="side-card">
+                    <div class="side-title">Sinh nhật sắp tới</div>
+                    <div class="title-rule"></div>
+                    <ul class="side-list">
+                        <li>🎂 Thu Nguyền – Ngày Mai</li>
+                        <li>🎂 Tín Maris – Tuần Tới</li>
+                    </ul>
+                </section>
 
-            <!-- CREATE STORY -->
-            <div class="story-box create-story" onclick="triggerStoryUpload()">
-                <img id="myStoryPreview">
-                <div class="add-icon">+</div>
-                <span>Tạo Tin</span>
-            </div>
-
-            <!-- USER STORY AFTER UPLOAD -->
-            <div class="story-box" id="myStoryBox" style="display:none;" onclick="openStory(document.getElementById('myStoryImage').src)">
-                <img id="myStoryImage">
-                <span>Câu Chuyện Của Bạn</span>
-                <div class="story-delete" onclick="deleteMyStory(event)">×</div>
-            </div>
-
-            <!-- DEMO FRIEND STORIES -->
-            <div class="story-box" onclick="openStory('https://i.pravatar.cc/300?img=9')">
-                <img src="https://i.pravatar.cc/300?img=9"><span>Thu Nguyễn</span>
-            </div>
-
-            <div class="story-box" onclick="openStory('https://i.pravatar.cc/300?img=21')">
-                <img src="https://i.pravatar.cc/300?img=21"><span>Tín Maris</span>
-            </div>
-
-            <div class="story-box" onclick="openStory('https://i.pravatar.cc/300?img=34')">
-                <img src="https://i.pravatar.cc/300?img=34"><span>Ngân Trần</span>
-            </div>
+                <section class="side-card">
+                    <div class="side-title">Đang hoạt động</div>
+                    <ul class="side-list">
+                        <li class="active-person"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="Duy Trí"><span>Duy Trí</span></li>
+                        <li class="active-person"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt="Minh Quang"><span>Minh Quang</span></li>
+                        <li class="active-person"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="Kim Ngân"><span>Kim Ngân</span></li>
+                    </ul>
+                </section>
+            </aside>
         </div>
-
-        <!-- Only ONE input (Fixed) -->
-        <input type="file" id="storyUploadInput" accept="image/*" style="display:none">
-
-
-        <!-- CREATE POST -->
-        <div class="card-premium create-post">
-
-            <div class="cp-top">
-                <img class="avatar-large" id="feedUserAvatar">
-                <input id="postInput" placeholder="Chia sẻ điều ngọt ngào trên Gummy...">
-
-                <div class="privacy-row">
-                    <select id="privacySelect" class="privacy-select">
-                        <option value="public">🌍 Công Khai</option>
-                        <option value="friends">👥 Bạn Bè</option>
-                        <option value="private">🔒 Chỉ Mình Tôi</option>
-                    </select>
-                </div>
-            </div>
-
-            <input type="file" id="postImageInput" accept="image/*" style="display:none">
-            <img id="previewImg" class="gummy-image" style="display:none;">
-
-            <div class="cp-actions">
-                <button class="cp-btn" onclick="document.getElementById('postImageInput').click()">
-                    <i class="fas fa-image"></i> Ảnh
-                </button>
-                <button class="cp-btn"><i class="fas fa-face-smile"></i> Tâm Trạng</button>
-                <button class="cp-btn"><i class="fas fa-location-dot"></i> Địa Điểm</button>
-            </div>
-
-            <button onclick="createPost()" class="btn-premium cp-post-btn">Đăng</button>
-        </div>
-
-        <!-- POSTS -->
-        <div id="postList"></div>
-
     </div>
-
-
-    <!-- RIGHT SIDEBAR -->
-    <div class="sidebar-right-premium">
-
-        <div class="card-premium">
-            <h3 class="card-title">Sự Kiện Gummy</h3>
-            <div class="right-item">🍬 Hội Thảo Nghệ Thuật Ngọt Ngào</div>
-            <div class="right-item">🎉 Tiệc Gummy</div>
-            <div class="right-item">💼 Gặp Gỡ Người Sáng Tạo</div>
-        </div>
-
-        <div class="card-premium">
-            <h3 class="card-title">Sinh Nhật Sắp Tới</h3>
-            <div class="right-item">🎂 Thu Nguyễn – Ngày Mai</div>
-            <div class="right-item">🎂 Tín Maris – Tuần Tới</div>
-        </div>
-
-        <div class="card-premium">
-            <h3 class="card-title">Đang Hoạt Động</h3>
-
-            <div class="active-user" onclick="openChat('Hùng To','https://i.pravatar.cc/100?img=14')">
-                <div class="active-avatar">
-                    <img src="https://i.pravatar.cc/100?img=14">
-                    <span class="online-dot"></span>
-                </div>
-                <span class="active-name">Hùng To</span>
-            </div>
-
-            <div class="active-user" onclick="openChat('Thuật Hồ','https://i.pravatar.cc/100?img=22')">
-                <div class="active-avatar">
-                    <img src="https://i.pravatar.cc/100?img=22">
-                    <span class="online-dot"></span>
-                </div>
-                <span class="active-name">Thuật Hồ</span>
-            </div>
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- CHAT POPUP -->
-<div class="chat-popup" id="chatPopup">
-    <div class="popup-header" id="popupHeader">
-        <img id="popupAvatar">
-        <span id="popupName">Tên</span>
-        <div class="popup-close" onclick="closePopup()">×</div>
-    </div>
-
-    <div class="popup-body" id="popupMessages"></div>
-
-    <div class="popup-input">
-        <input type="text" id="popupInput" placeholder="Aa...">
-        <button onclick="sendPopupMsg()">
-            <i class="fas fa-paper-plane"></i>
-        </button>
-    </div>
-</div>
-
-<!-- FEED.JS -->
-<script src="config.js"></script>
-<script src="js/api/api.base.js"></script>
-<script src="js/api/api.users.js"></script>
-<script src="js/api/api.chat.js"></script>
-<script src="js/api/websocket.friends.js"></script>
-<script src="js/notification-manager.js"></script>
-<script src="js/shared-layout.js"></script>
-<script src="js/pages/feed.js"></script>
-
 </body>
 </html>
