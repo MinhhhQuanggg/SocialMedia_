@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Gummy – Group Information</title>
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/ui.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* Bố cục chỉnh cho phần màn hình Nhóm */
+body {
+    background-color: #F7F7F7;
+}
+
+.group-main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    /* Dùng padding để chừa lề bên phải tương tự giao diện mẫu, 
+       chứ không để content sát mép màn hình */
+    padding-right: 30px;
+}
+
+/* Phần Header của nhóm (Bìa + Thanh tiêu đề) */
+.group-header-container {
+    width: 100%;
+}
+
+.group-cover-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.group-cover {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+}
+
+.edit-cover-btn {
+    position: absolute;
+    bottom: 15px;
+    right: 25px;
+    background: rgba(255, 255, 255, 0.85);
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #444;
+    transition: 0.2s;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.edit-cover-btn:hover {
+    background: white;
+}
+
+.group-title-bar {
+    background: #ebd8e3; /* Màu hồng nhạt theo ảnh */
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.group-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.group-header-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.group-action-btn {
+    background: #474747;
+    color: #fff;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.group-action-btn:hover {
+    background: #333;
+}
+
+/* Container chia 2 cột: Đăng bài & Giới thiệu */
+.group-body {
+    display: flex;
+    gap: 25px;
+    align-items: flex-start;
+}
+
+.group-feed {
+    flex: 2; /* Khu vực trái rộng hơn */
+}
+
+.group-sidebar {
+    flex: 1; /* Khu vực phải hẹp hơn */
+    min-width: 280px;
+}
+
+/* Khung tạo bài viết chung */
+.create-post-box {
+    background: #e8e8e8;
+    border-radius: 25px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cp-top-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cp-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.cp-input-wrap {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #d4d4d4;
+    border-radius: 20px;
+    padding-right: 15px;
+}
+
+.cp-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 12px 18px;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+}
+
+.cp-input::placeholder {
+    color: #666;
+    font-weight: 500;
+}
+
+.privacy-dropdown {
+    background: #c3c3c3;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.cp-icons-row {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    font-size: 18px;
+}
+
+.cp-icons-row i {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.cp-icons-row i:hover {
+    transform: scale(1.1);
+}
+
+/* Màu icon gần giống mẫu */
+.icon-image { color: #5bc0be; } /* xanh lơ */
+.icon-tag { color: #f6a142; }   /* cam/vàng */
+.icon-smile { color: #7f7f7f; } /* xám */
+.icon-pin { color: #d94242; }   /* đỏ */
+
+.btn-post {
+    background: #6def84; /* Màu xanh lá mạ sáng */
+    color: #1b5327;
+    border: none;
+    padding: 10px 45px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    align-self: center;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 4px 10px rgba(109,239,132,0.3);
+}
+
+.btn-post:hover {
+    background: #5ade71;
+    transform: translateY(-2px);
+}
+
+/* Khung giới thiệu nhóm */
+.about-box {
+    background: #e8e8e8;
+    border-radius: 25px;
+    padding: 25px;
+}
+
+.about-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #1a1a1a;
+}
+
+.about-text {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 18px;
+}
+
+.about-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #333;
+}
+
+.about-status i {
+    color: #3359d9; /* blueish globe */
+}
+
+/* Override UI CSS left sidebar max-height limit to fit layout perfectly */
+.sidebar-left-premium {
+    min-width: 240px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MAIN LAYOUT (Shared layout injected by shared-layout.js) -->
+<div class="layout-premium">
+
+    <!-- CENTER & RIGHT CONTENT COMBINED -->
+    <div class="group-main-area">
+        
+        <!-- HEADER NHÓM -->
+        <div class="group-header-container">
+            <!-- Dùng Ảnh biển lúc hoàng hôn giống ảnh gốc số 2 -->
+            <div class="group-cover-wrapper">
+                <img id="groupCoverImg" src="https://images.unsplash.com/photo-1506744626753-df830113cf5b?q=80&w=1600" class="group-cover" alt="Group Cover">
+                <button class="edit-cover-btn" title="Thay đổi ảnh bìa" onclick="document.getElementById('groupCoverInput').click()"><i class="fas fa-camera"></i></button>
+                <input type="file" id="groupCoverInput" accept="image/*" style="display:none;">
+            </div>
+            
+            <div class="group-title-bar">
+                <h1 class="group-title">Hội những người đam mê Thiên Văn</h1>
+                <div class="group-header-actions">
+                    <button class="group-action-btn"><i class="fas fa-search"></i></button>
+                    <button class="group-action-btn"><i class="fas fa-ellipsis-h"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHẦN BODY QUẢN LÝ CONTENT BÊN DƯỚI -->
+        <div class="group-body">
+            
+            <!-- Cột trái: Đăng bài -->
+            <div class="group-feed">
+                <div class="create-post-box">
+                    <div class="cp-top-row">
+                        <!-- Ảnh Avatar mockup -->
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=100" class="cp-avatar" alt="User">
+                        
+                        <div class="cp-input-wrap">
+                            <input type="text" class="cp-input" placeholder="Chia sẻ suy nghĩ của bạn...">
+                            <button class="privacy-dropdown">
+                                <i class="fas fa-globe-asia"></i> Công khai <i class="fas fa-chevron-down" style="font-size: 10px; margin-left: 2px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="cp-icons-row">
+                        <i class="fas fa-image icon-image"></i>
+                        <i class="fas fa-tags icon-tag"></i>
+                        <i class="far fa-smile icon-smile"></i>
+                        <i class="fas fa-map-marker-alt icon-pin"></i>
+                    </div>
+
+                    <button class="btn-post">Đăng</button>
+                </div>
+            </div>
+
+            <!-- Cột phải: Giới thiệu -->
+            <div class="group-sidebar">
+                <div class="about-box">
+                    <div class="about-title">Giới thiệu</div>
+                    <div class="about-text">
+                        Nhóm là nơi chia sẻ, trao đổi các sở thích, suy nghĩ của bạn về thiên văn học. Nghiêm cấm các hành vi đăng bài mua bán, đồi trụy, liên quan đến chính trị.
+                    </div>
+                    <div class="about-status">
+                        <i class="fas fa-globe-americas"></i> <span>Nhóm công khai</span>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- End group body -->
+
+    </div> <!-- End main area -->
+
+</div> <!-- End layout -->
+
+<!-- JS -->
+<script src="config.js"></script>
+<script src="js/api/api.base.js"></script>
+<script src="js/api/api.users.js"></script>
+<script src="js/notification-manager.js"></script>
+<script src="js/shared-layout.js"></script>
+
+<!-- Script nhỏ đánh dấu 'Cộng đồng' trên Sidebar nếu cần và xử lý Preview Ảnh Bìa -->
+<script>
+    // Xử lý thay đổi Ảnh Bìa nhóm (Cover Image)
+    document.getElementById('groupCoverInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const objectUrl = URL.createObjectURL(file);
+            document.getElementById('groupCoverImg').src = objectUrl;
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Đợi 1 chút cho layout load xong rồi chọn highlight "Cộng đồng"
+        setTimeout(function() {
+            var items = document.querySelectorAll('.side-item');
+            items.forEach(function(item) {
+                item.classList.remove('active');
+                if (item.innerText.includes('Cộng đồng')) {
+                    item.classList.add('active');
+                }
+            });
+        }, 500);
+    });
+</script>
+
+</body>
+</html>
