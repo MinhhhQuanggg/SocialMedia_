@@ -1,635 +1,584 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<title>Gummy – Feed</title>
+    <meta charset="UTF-8" />
+    <title>Gummy – Feed</title>
 
-<link rel="stylesheet" href="css/ui.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<style>
-/* ==========================
+    <style>
+        /* ==========================
    CHAT POPUP
 ========================== */
-.chat-popup {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 340px;
-    background: white;
-    border-radius: 18px;
-    box-shadow: 0 6px 25px rgba(0,0,0,0.15);
-    display: none;
-    flex-direction: column;
-    z-index: 999;
-}
+        .chat-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 340px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            z-index: 999;
+        }
 
-.popup-header {
-    background: var(--gummy-mint);
-    padding: 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 600;
-    color: #333;
-    border-radius: 18px 18px 0 0;
-}
+        .popup-header {
+            background: var(--gummy-mint);
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            color: #333;
+            border-radius: 18px 18px 0 0;
+        }
 
-.popup-header img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
+        .popup-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
 
-.popup-close {
-    margin-left: auto;
-    cursor: pointer;
-    font-size: 20px;
-}
+        .popup-close {
+            margin-left: auto;
+            cursor: pointer;
+            font-size: 20px;
+        }
 
-.popup-body {
-    height: 260px;
-    padding: 10px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-}
+        .popup-body {
+            height: 260px;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
 
-.popup-msg-left {
-    max-width: 70%;
-    background: var(--gummy-mint);
-    padding: 10px 14px;
-    margin: 8px 0;
-    border-radius: 18px;
-    align-self: flex-start;
-}
+        .popup-msg-left {
+            max-width: 70%;
+            background: var(--gummy-mint);
+            padding: 10px 14px;
+            margin: 8px 0;
+            border-radius: 18px;
+            align-self: flex-start;
+        }
 
-.popup-msg-right {
-    max-width: 70%;
-    background: var(--gummy-pink);
-    padding: 10px 14px;
-    margin: 8px 0;
-    border-radius: 18px;
-    align-self: flex-end;
-    color: white;
-}
+        .popup-msg-right {
+            max-width: 70%;
+            background: var(--gummy-pink);
+            padding: 10px 14px;
+            margin: 8px 0;
+            border-radius: 18px;
+            align-self: flex-end;
+            color: white;
+        }
 
-.popup-input {
-    display: flex;
-    gap: 10px;
-    padding: 12px;
-}
+        .popup-input {
+            display: flex;
+            gap: 10px;
+            padding: 12px;
+        }
 
-.popup-input input {
-    flex: 1;
-    padding: 12px;
-    border-radius: 18px;
-    border: 1px solid #ccc;
-}
+        .popup-input input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 18px;
+            border: 1px solid #ccc;
+        }
 
-.popup-input button {
-    background: var(--gummy-pink);
-    border: none;
-    padding: 12px 14px;
-    border-radius: 14px;
-    color: white;
-    cursor: pointer;
-}
+        .popup-input button {
+            background: var(--gummy-pink);
+            border: none;
+            padding: 12px 14px;
+            border-radius: 14px;
+            color: white;
+            cursor: pointer;
+        }
 
-/* ==========================
+        /* ==========================
    STORY VIEWER POPUP
 ========================== */
-.story-viewer {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 900;
-}
+        .story-viewer {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 900;
+        }
 
-.story-inner img {
-    max-width: 500px;
-    width: 90%;
-    border-radius: 14px;
-}
-/* FLOATING REACTION ICON (Facebook style) */
-.story-floating-icon {
-    position: absolute;
-    font-size: 32px;
-    animation: floatUp 1.5s ease-out forwards;
-    pointer-events: none;
-    opacity: 1;
-}
+        .story-inner img {
+            max-width: 500px;
+            width: 90%;
+            border-radius: 14px;
+        }
 
-@keyframes floatUp {
-    0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-    60% {
-        transform: translateY(-120px) scale(1.4);
-        opacity: 0.9;
-    }
-    100% {
-        transform: translateY(-200px) scale(1);
-        opacity: 0;
-    }
-}
+        /* FLOATING REACTION ICON (Facebook style) */
+        .story-floating-icon {
+            position: absolute;
+            font-size: 32px;
+            animation: floatUp 1.5s ease-out forwards;
+            pointer-events: none;
+            opacity: 1;
+        }
 
-.privacy-select {
-    margin-left: 60px;
-    margin-top: 6px;
-    padding: 6px 10px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    font-size: 14px;
-    color: #444;
-}
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
 
-.reaction-wrapper {
-    position: relative;
-    display: inline-block;
-}
+            60% {
+                transform: translateY(-120px) scale(1.4);
+                opacity: 0.9;
+            }
 
-.reaction-box {
-    position: absolute;
-    bottom: 40px;
-    left: 0;
-    display: flex;
-    gap: 10px;
-    padding: 8px 14px;
-    background: white;
-    border-radius: 40px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.15s ease;
-    z-index: 20;
-}
+            100% {
+                transform: translateY(-200px) scale(1);
+                opacity: 0;
+            }
+        }
 
-.reaction-wrapper:hover .reaction-box {
-    opacity: 1;
-    pointer-events: auto;
-}
+        .privacy-select {
+            margin-left: 60px;
+            margin-top: 6px;
+            padding: 6px 10px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            color: #444;
+        }
 
+        .reaction-wrapper {
+            position: relative;
+            display: inline-block;
+        }
 
-.post-actions {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 cột đều nhau */
-    gap: 6px;
-    margin-top: 10px;
-    padding: 8px 0 0;
-    border-top: 1px solid #eee;
-}
+        .reaction-box {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            display: flex;
+            gap: 10px;
+            padding: 8px 14px;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.15s ease;
+            z-index: 20;
+        }
 
-.post-btn {
-    background: white;
-    padding: 12px 0;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 500;
-    color: #666;
-    transition: 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px; /* icon cách chữ */
-}
-
-.post-btn:hover {
-    background: #f5f5f5;
-}
-
-.post-btn.liked {
-    color: #e0245e; /* giống Facebook reaction màu hồng */
-    font-weight: 600;
-}
-/* STORY REACTION BUTTONS LIKE FACEBOOK */
+        .reaction-wrapper:hover .reaction-box {
+            opacity: 1;
+            pointer-events: auto;
+        }
 
 
-.story-react-btn {
-    width: 52px;
-    height: 52px;
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(4px);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    cursor: pointer;
-    transition: 0.2s;
-    border: 1px solid rgba(255,255,255,0.25);
-}
+        .post-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            /* 3 cột đều nhau */
+            gap: 6px;
+            margin-top: 10px;
+            padding: 8px 0 0;
+            border-top: 1px solid #eee;
+        }
 
-.story-react-btn:hover {
-    transform: scale(1.25);
-    background: rgba(255,255,255,0.25);
-}
-.story-inner img {
-    max-width: 430px;
-    width: 100%;
-    height: 700px;
-    object-fit: cover;
-    border-radius: 14px;
-}
-.story-close {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 38px;
-    color: white;
-    cursor: pointer;
-    z-index: 99999;
-    font-weight: bold;
-    text-shadow: 0 0 8px rgba(0,0,0,0.6);
-    transition: 0.2s;
-}
-.story-reaction-bar {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 18px;
-    z-index: 99999;
-}
+        .post-btn {
+            background: white;
+            padding: 12px 0;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            color: #666;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            /* icon cách chữ */
+        }
 
-.story-react-btn {
-    width: 52px;
-    height: 52px;
-    background: rgba(255,255,255,0.18);
-    backdrop-filter: blur(6px);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 28px;
-    cursor: pointer;
-    transition: 0.25s;
-    border: 1px solid rgba(255,255,255,0.4);
-}
+        .post-btn:hover {
+            background: #f5f5f5;
+        }
 
-.story-react-btn:hover {
-    transform: scale(1.25);
-    background: rgba(255,255,255,0.3);
-}
+        .post-btn.liked {
+            color: #e0245e;
+            /* giống Facebook reaction màu hồng */
+            font-weight: 600;
+        }
 
-.story-close:hover {
-    transform: scale(1.2);
-}
-.comment-box {
-    padding: 10px 5px;
-    border-top: 1px solid #eee;
-    margin-top: 10px;
-}
+        /* STORY REACTION BUTTONS LIKE FACEBOOK */
 
-.cmt-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 0;
-}
 
-.cmt-item img {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-}
+        .story-react-btn {
+            width: 52px;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
 
-.cmt-item button {
-    margin-left: auto;
-    background: none;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    color: #777;
-}
+        .story-react-btn:hover {
+            transform: scale(1.25);
+            background: rgba(255, 255, 255, 0.25);
+        }
 
-.cmt-add {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 8px;
-}
+        .story-inner img {
+            max-width: 430px;
+            width: 100%;
+            height: 700px;
+            object-fit: cover;
+            border-radius: 14px;
+        }
 
-.cmt-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-}
+        .story-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 38px;
+            color: white;
+            cursor: pointer;
+            z-index: 99999;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+            transition: 0.2s;
+        }
 
-.cmt-input-wrapper {
-    flex: 1;
-}
+        .story-reaction-bar {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 18px;
+            z-index: 99999;
+        }
 
-.cmt-input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 18px;
-    border: 1px solid #ccc;
-}
+        .story-react-btn {
+            width: 52px;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(6px);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            cursor: pointer;
+            transition: 0.25s;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
 
-.cmt-btn {
-    padding: 8px 14px;
-    border-radius: 12px;
-    background: var(--gummy-pink);
-    color: white;
-    border: none;
-    cursor: pointer;
-}
+        .story-react-btn:hover {
+            transform: scale(1.25);
+            background: rgba(255, 255, 255, 0.3);
+        }
 
-/* Post Edit/Delete Buttons */
-.post-actions-menu {
-    display: flex;
-    gap: 8px;
-    margin-left: auto;
-}
+        .story-close:hover {
+            transform: scale(1.2);
+        }
 
-.post-edit-btn,
-.post-delete {
-    background: transparent;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    color: #666;
-    transition: all 0.2s;
-    font-size: 16px;
-}
+        .comment-box {
+            padding: 10px 5px;
+            border-top: 1px solid #eee;
+            margin-top: 10px;
+        }
 
-.post-edit-btn:hover {
-    background: #e3f2fd;
-    color: #2196F3;
-}
+        .cmt-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+        }
 
-.post-delete:hover {
-    background: #ffebee;
-    color: #f44336;
-}
+        .cmt-item img {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+        }
 
-/* Inline Post Edit Container */
-.post-edit-container {
-    padding: 15px;
-    animation: slideDown 0.3s ease;
-}
+        .cmt-item button {
+            margin-left: auto;
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #777;
+        }
 
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        .cmt-add {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
 
-.post-edit-textarea {
-    width: 100%;
-    min-height: 100px;
-    padding: 15px;
-    border: 2px solid var(--gummy-mint);
-    border-radius: 12px;
-    font-size: 15px;
-    font-family: inherit;
-    resize: vertical;
-    transition: border-color 0.2s;
-    box-sizing: border-box;
-}
+        .cmt-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+        }
 
-.post-edit-textarea:focus {
-    outline: none;
-    border-color: var(--gummy-pink);
-}
+        .cmt-input-wrapper {
+            flex: 1;
+        }
 
-.post-edit-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-    justify-content: flex-end;
-}
+        .cmt-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 18px;
+            border: 1px solid #ccc;
+        }
 
-.post-edit-actions .btn-save {
-    background: var(--gummy-mint);
-    color: #3f5f56;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
+        .cmt-btn {
+            padding: 8px 14px;
+            border-radius: 12px;
+            background: var(--gummy-pink);
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
 
-.post-edit-actions .btn-save:hover {
-    background: #AEE4CD;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
+        /* Post Edit/Delete Buttons */
+        .post-actions-menu {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
 
-.post-edit-actions .btn-cancel {
-    background: #f5f5f5;
-    color: #666;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
+        .post-edit-btn,
+        .post-delete {
+            background: transparent;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
 
-.post-edit-actions .btn-cancel:hover {
-    background: #e0e0e0;
-}
+        .post-edit-btn:hover {
+            background: #e3f2fd;
+            color: #2196F3;
+        }
 
-</style>
+        .post-delete:hover {
+            background: #ffebee;
+            color: #f44336;
+        }
+
+        /* Inline Post Edit Container */
+        .post-edit-container {
+            padding: 15px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .post-edit-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid var(--gummy-mint);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .post-edit-textarea:focus {
+            outline: none;
+            border-color: var(--gummy-pink);
+        }
+
+        .post-edit-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            justify-content: flex-end;
+        }
+
+        .post-edit-actions .btn-save {
+            background: var(--gummy-mint);
+            color: #3f5f56;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .post-edit-actions .btn-save:hover {
+            background: #AEE4CD;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .post-edit-actions .btn-cancel {
+            background: #f5f5f5;
+            color: #666;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .post-edit-actions .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+    </style>
 
 </head>
 
 <body>
 
-<!-- ==========================
+    <!-- ==========================
      STORY VIEWER
 ========================== -->
-<div class="story-viewer" id="storyViewer">
+    <div class="story-viewer" id="storyViewer">
         <div class="story-close" onclick="closeStory()">✕</div>
 
-    <div class="story-inner">
-        <img id="storyImage">
-    </div>
-
-    <!-- FLOAT REACTION ZONE -->
-    <div id="storyFloatZone"></div>
-
-    <!-- Reaction bar -->
-    <div class="story-reaction-bar">
-    <div class="story-react-btn" onclick="floatStoryReaction('👍')">👍</div>
-    <div class="story-react-btn" onclick="floatStoryReaction('❤️')">❤️</div>
-    <div class="story-react-btn" onclick="floatStoryReaction('😂')">😂</div>
-    <div class="story-react-btn" onclick="floatStoryReaction('😮')">😮</div>
-    <div class="story-react-btn" onclick="floatStoryReaction('😢')">😢</div>
-</div>
-
-
-</div>
-
-<!-- MAIN LAYOUT (Shared layout injected by shared-layout.js) -->
-<div class="layout-premium">
-
-
-    <!-- ==========================
-         CENTER FEED
-    =========================== -->
-    <div class="center-feed-premium">
-
-        <div class="story-container">
-
-            <!-- CREATE STORY -->
-            <div class="story-box create-story" onclick="triggerStoryUpload()">
-                <img id="myStoryPreview">
-                <div class="add-icon">+</div>
-                <span>Tạo Tin</span>
-            </div>
-
-            <!-- USER STORY AFTER UPLOAD -->
-            <div class="story-box" id="myStoryBox" style="display:none;" onclick="openStory(document.getElementById('myStoryImage').src)">
-                <img id="myStoryImage">
-                <span>Câu Chuyện Của Bạn</span>
-                <div class="story-delete" onclick="deleteMyStory(event)">×</div>
-            </div>
-
-            <!-- DEMO FRIEND STORIES -->
-            <div class="story-box" onclick="openStory('https://i.pravatar.cc/300?img=9')">
-                <img src="https://i.pravatar.cc/300?img=9"><span>Thu Nguyễn</span>
-            </div>
-
-            <div class="story-box" onclick="openStory('https://i.pravatar.cc/300?img=21')">
-                <img src="https://i.pravatar.cc/300?img=21"><span>Tín Maris</span>
-            </div>
-
-            <div class="story-box" onclick="openStory('https://i.pravatar.cc/300?img=34')">
-                <img src="https://i.pravatar.cc/300?img=34"><span>Ngân Trần</span>
-            </div>
+        <div class="story-inner">
+            <img id="storyImage">
         </div>
 
-        <!-- Only ONE input (Fixed) -->
-        <input type="file" id="storyUploadInput" accept="image/*" style="display:none">
+        <!-- FLOAT REACTION ZONE -->
+        <div id="storyFloatZone"></div>
+
+        <!-- Reaction bar -->
+        <div class="story-reaction-bar">
+            <div class="story-react-btn" onclick="floatStoryReaction('👍')">👍</div>
+            <div class="story-react-btn" onclick="floatStoryReaction('❤️')">❤️</div>
+            <div class="story-react-btn" onclick="floatStoryReaction('😂')">😂</div>
+            <div class="story-react-btn" onclick="floatStoryReaction('😮')">😮</div>
+            <div class="story-react-btn" onclick="floatStoryReaction('😢')">😢</div>
+        </div>
 
 
-        <!-- CREATE POST -->
-        <div class="card-premium create-post">
+    </div>
 
-            <div class="cp-top">
-                <img class="avatar-large" id="feedUserAvatar">
-                <input id="postInput" placeholder="Chia sẻ điều ngọt ngào trên Gummy...">
+    <!-- MAIN LAYOUT (Shared layout injected by shared-layout.js) -->
+    <style>
+        body { background: #EAEAEA !important; }
+        .favorites-premium h2 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #222;
+            margin-bottom: 8px;
+        }
+        .favorites-premium p {
+            font-size: 18px;
+            color: #222;
+            margin: 0;
+        }
+        .manage-fav-btn {
+            background: #D9D9D9;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+        .manage-fav-btn:hover {
+            background: #cdcdcd;
+        }
+    </style>
+    <div class="layout-premium">
 
-                <div class="privacy-row">
-                    <select id="privacySelect" class="privacy-select">
-                        <option value="public">🌍 Công Khai</option>
-                        <option value="friends">👥 Bạn Bè</option>
-                        <option value="private">🔒 Chỉ Mình Tôi</option>
-                    </select>
-                </div>
-            </div>
-
-            <input type="file" id="postImageInput" accept="image/*" style="display:none">
-            <img id="previewImg" class="gummy-image" style="display:none;">
-
-            <div class="cp-actions">
-                <button class="cp-btn" onclick="document.getElementById('postImageInput').click()">
-                    <i class="fas fa-image"></i> Ảnh
+        <!-- ==========================
+         FAVORITES CONTENT
+        =========================== -->
+        <div class="favorites-premium" style="flex: 1; min-height: calc(100vh - 40px); display: flex; flex-direction: column;">
+            <div style="align-self: flex-end; margin-bottom: 25px;">
+                <button class="manage-fav-btn">
+                    <i class="fas fa-gear"></i> Manage Favorites
                 </button>
-                <button class="cp-btn"><i class="fas fa-face-smile"></i> Tâm Trạng</button>
-                <button class="cp-btn"><i class="fas fa-location-dot"></i> Địa Điểm</button>
             </div>
-
-            <button onclick="createPost()" class="btn-premium cp-post-btn">Đăng</button>
-        </div>
-
-        <!-- POSTS -->
-        <div id="postList"></div>
-
-    </div>
-
-
-    <!-- RIGHT SIDEBAR -->
-    <div class="sidebar-right-premium">
-
-        <div class="card-premium">
-            <h3 class="card-title">Sự Kiện Gummy</h3>
-            <div class="right-item">🍬 Hội Thảo Nghệ Thuật Ngọt Ngào</div>
-            <div class="right-item">🎉 Tiệc Gummy</div>
-            <div class="right-item">💼 Gặp Gỡ Người Sáng Tạo</div>
-        </div>
-
-        <div class="card-premium">
-            <h3 class="card-title">Sinh Nhật Sắp Tới</h3>
-            <div class="right-item">🎂 Thu Nguyễn – Ngày Mai</div>
-            <div class="right-item">🎂 Tín Maris – Tuần Tới</div>
-        </div>
-
-        <div class="card-premium">
-            <h3 class="card-title">Đang Hoạt Động</h3>
-
-            <div class="active-user" onclick="openChat('Hùng To','https://i.pravatar.cc/100?img=14')">
-                <div class="active-avatar">
-                    <img src="https://i.pravatar.cc/100?img=14">
-                    <span class="online-dot"></span>
+            
+            <div style="background: #DCDCDC; width: 100%; border-radius: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 20px; max-height: 400px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.01);">
+                <div style="width: 75px; height: 75px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(255, 180, 0, 0.35);">
+                    <i class="fas fa-star" style="font-size: 40px; color: #ffca28; background: linear-gradient(135deg, #ffe082 0%, #ffca28 50%, #ff8f00 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 3px 3px rgba(255,143,0,0.4));"></i>
                 </div>
-                <span class="active-name">Hùng To</span>
-            </div>
-
-            <div class="active-user" onclick="openChat('Thuật Hồ','https://i.pravatar.cc/100?img=22')">
-                <div class="active-avatar">
-                    <img src="https://i.pravatar.cc/100?img=22">
-                    <span class="online-dot"></span>
-                </div>
-                <span class="active-name">Thuật Hồ</span>
+                <h2>Bạn đã xem hết các bài viết trong mục Yêu thích</h2>
+                <p>Không có bài viết nào trong 3 ngày qua</p>
             </div>
         </div>
 
     </div>
 
-</div>
 
+    <!-- CHAT POPUP -->
+    <div class="chat-popup" id="chatPopup">
+        <div class="popup-header" id="popupHeader">
+            <img id="popupAvatar">
+            <span id="popupName">Tên</span>
+            <div class="popup-close" onclick="closePopup()">×</div>
+        </div>
 
-<!-- CHAT POPUP -->
-<div class="chat-popup" id="chatPopup">
-    <div class="popup-header" id="popupHeader">
-        <img id="popupAvatar">
-        <span id="popupName">Tên</span>
-        <div class="popup-close" onclick="closePopup()">×</div>
+        <div class="popup-body" id="popupMessages"></div>
+
+        <div class="popup-input">
+            <input type="text" id="popupInput" placeholder="Aa...">
+            <button onclick="sendPopupMsg()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
     </div>
 
-    <div class="popup-body" id="popupMessages"></div>
-
-    <div class="popup-input">
-        <input type="text" id="popupInput" placeholder="Aa...">
-        <button onclick="sendPopupMsg()">
-            <i class="fas fa-paper-plane"></i>
-        </button>
-    </div>
-</div>
-
-<!-- FEED.JS -->
-<script src="config.js"></script>
-<script src="js/api/api.base.js"></script>
-<script src="js/api/api.users.js"></script>
-<script src="js/api/api.chat.js"></script>
-<script src="js/api/websocket.friends.js"></script>
-<script src="js/notification-manager.js"></script>
-<script src="js/shared-layout.js"></script>
-<script src="js/pages/feed.js"></script>
+    <!-- FEED.JS -->
+    <script src="config.js"></script>
+    <script src="js/api/api.base.js"></script>
+    <script src="js/api/api.users.js"></script>
+    <script src="js/api/api.chat.js"></script>
+    <script src="js/api/websocket.friends.js"></script>
+    <script src="js/notification-manager.js"></script>
+    <script src="js/shared-layout.js"></script>
+    <script src="js/pages/feed.js"></script>
 
 </body>
+
 </html>
