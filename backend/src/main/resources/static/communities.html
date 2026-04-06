@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Cộng đồng | Gummy</title>
+<link rel="stylesheet" href="css/ui.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+    body {
+        background: #f2f2f5;
+        min-height: 100vh;
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+    }
+
+    .center-feed-premium {
+        flex: 1;
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 38px 0 60px;
+    }
+
+    .page-heading {
+        font-size: 26px;
+        font-weight: 700;
+        color: #E88DB5;
+        margin-bottom: 24px;
+        text-align: left;
+    }
+
+    .community-create {
+        background: white;
+        border: 1px solid #e6e6e6;
+        border-radius: 40px;
+        padding: 32px 28px;
+        margin-bottom: 24px;
+    }
+
+    .community-create-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #E88DB5;
+        margin-bottom: 18px;
+    }
+
+    .community-create-body {
+        display: grid;
+        gap: 16px;
+    }
+
+    .community-create-body .input,
+    .community-create-body textarea {
+        width: 100%;
+        border-radius: 999px;
+        padding: 16px 20px;
+        border: 1px solid #e6e6e6;
+        background: #fafafa;
+        outline: none;
+        font-size: 15px;
+        color: #444;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .community-create-body .input:focus,
+    .community-create-body textarea:focus {
+        border-color: #b7ebd6;
+        box-shadow: 0 0 0 4px rgba(183,235,214,0.25);
+    }
+
+    .community-create-body textarea {
+        border-radius: 24px;
+        min-height: 110px;
+        resize: vertical;
+    }
+
+    .community-create-body .btn-premium {
+        width: 100%;
+        border-radius: 999px;
+        background: #b7ebd6;
+        color: #ffffff;
+        border: none;
+        font-size: 16px;
+        font-weight: 700;
+        padding: 14px 0;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .community-create-body .btn-premium:hover {
+        background: #9fe0b7;
+    }
+    .layout-premium {
+        position: relative;
+    }
+
+    .community-star {
+        position: absolute;
+        top: 130px;
+        right: 30px;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+        font-size: 80px;
+        color: #ffcd00;
+    }
+    .community-card {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 18px;
+        border-radius: 24px;
+        border: 1px solid #e8e8e8;
+        background: white;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+
+    .community-card img {
+        width: 90px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 18px;
+        flex-shrink: 0;
+    }
+
+    .community-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .community-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #E88DB5;
+        margin-bottom: 8px;
+    }
+
+    .community-desc {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .community-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 120px;
+    }
+
+    .btn-join {
+        border-radius: 999px;
+        border: 1px solid #222;
+        background: white;
+        color: #222;
+        padding: 10px 20px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .btn-join:hover {
+        background: #f4f4f4;
+    }
+
+    .btn-join.joined {
+        background: #b7ebd6;
+        color: #2a4f3d;
+        border-color: #9ed9b6;
+    }
+</style>
+</head>
+<body>
+<div class="layout-premium">
+    <div class="center-feed-premium">
+        <div class="community-star">★</div>
+        <div class="page-heading">Khám phá cộng đồng</div>
+
+        <div class="community-create">
+            <div class="community-create-title">Tạo cộng đồng mới</div>
+            <div class="community-create-body">
+                <input id="newCommunityName" class="input" type="text" placeholder="Tên cộng đồng">
+                <textarea id="newCommunityDesc" placeholder="Mô tả"></textarea>
+                <button type="button" class="btn-premium" onclick="createCommunity()">Tạo</button>
+            </div>
+        </div>
+
+        <div id="communityList">
+            <div class="community-card">
+                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=300&q=80" alt="Cộng đồng nhiếp ảnh">
+                <div class="community-info">
+                    <div class="community-title">Cộng đồng nhiếp ảnh</div>
+                    <div class="community-desc">Chia sẻ những bức ảnh đẹp nhất của bạn và học hỏi cùng nhau.</div>
+                </div>
+                <div class="community-actions">
+                    <button class="btn-join">Tham gia</button>
+                </div>
+            </div>
+
+            <div class="community-card">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=300&q=80" alt="Chia sẻ làm đẹp">
+                <div class="community-info">
+                    <div class="community-title">Chia sẻ kiến thức làm đẹp</div>
+                    <div class="community-desc">Chia sẻ những kiến thức và sản phẩm làm đẹp uy tín.</div>
+                </div>
+                <div class="community-actions">
+                    <button class="btn-join">Tham gia</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="config.js"></script>
+<script src="js/api/api.base.js"></script>
+<script src="js/shared-layout.js"></script>
+<script src="js/pages/communities.js"></script>
+</body>
+</html>

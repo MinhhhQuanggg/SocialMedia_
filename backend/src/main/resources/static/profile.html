@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Gummy – Profile</title>
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/ui.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* Đảm bảo hình ảnh không bị lỗi, dùng ảnh mạng demo nếu chưa có ảnh thật */
+.profile-header-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    position: relative;
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.cover-photo-wrapper {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    background: #ccc; /* fallback color */
+}
+
+.cover-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.edit-cover-btn {
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.85);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #444;
+    transition: 0.2s;
+    z-index: 10;
+}
+
+.edit-cover-btn:hover {
+    background: white;
+}
+
+.profile-avatar-container {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    margin: 0 auto;
+    margin-top: -65px;
+    z-index: 2;
+}
+
+.profile-avatar {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 4px solid white;
+    object-fit: cover;
+    background-color: white;
+}
+
+.edit-avatar-btn {
+    position: absolute;
+    bottom: 0;
+    right: 5px;
+    background: white;
+    border: 1px solid #ddd;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #555;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.profile-name {
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 15px;
+    color: #1a1a1a;
+}
+
+.profile-ig {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.profile-stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    color: #444;
+    font-size: 13px;
+}
+
+.profile-stats span {
+    font-weight: 500;
+}
+
+/* Menu Right Sidebar */
+.right-sidebar-section {
+    margin-bottom: 30px;
+    padding-left: 10px;
+}
+
+.right-sidebar-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.right-sidebar-title {
+    color: var(--gummy-pink);
+    font-size: 17px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.btn-edit-profile {
+    background: var(--gummy-mint);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: #3f5f56;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s;
+}
+
+.btn-edit-profile:hover {
+    background: #AEE4CD;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    color: #333;
+    font-size: 14px;
+}
+
+.info-item i {
+    width: 20px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.friend-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.friend-item {
+    font-size: 14px;
+    color: #333;
+}
+
+.photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+}
+.photo-grid img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+/* Post Container */
+.post-wrapper {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.section-title {
+    color: #1a1a1a;
+    font-size: 16px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.post-container-inner {
+    background: #e4e4e4;
+    border-radius: 20px;
+    padding: 15px;
+    position: relative;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.post-time {
+    font-size: 10px;
+    font-weight: bold;
+    color: #1a1a1a;
+}
+
+.post-edit-actions-top {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 12px;
+    color: #555;
+    font-size: 15px;
+}
+
+.post-edit-actions-top i {
+    cursor: pointer;
+}
+
+/* Bổ sung border dọc cho mảng bên phải giống ảnh */
+.sidebar-right-premium {
+    border-left: 1px solid #d4d4d4;
+    padding-left: 20px;
+    min-height: calc(100vh - 100px);
+}
+
+/* Đảm bảo khung giữa tự mở rộng ổn định */
+.center-feed-premium {
+    max-width: 750px !important; 
+    width: 100%;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MAIN LAYOUT (Shared layout injected by shared-layout.js) -->
+<div class="layout-premium">
+
+    <!-- CENTER CONTENT -->
+    <div class="center-feed-premium">
+        
+        <!-- PROFILE HEADER -->
+        <div class="profile-header-card">
+            <div class="cover-photo-wrapper">
+                <!-- Dùng ảnh nguồn Unsplash tạm thời để khỏi bị lỗi 404 làm sập khung -->
+                <img id="coverImg" src="https://images.unsplash.com/photo-1506744626753-df830113cf5b?q=80&w=1200" class="cover-photo" alt="Cover Photo">
+                <button class="edit-cover-btn" onclick="document.getElementById('coverInput').click()"><i class="fas fa-camera"></i></button>
+                <input type="file" id="coverInput" accept="image/*" style="display:none;">
+            </div>
+
+            <div class="profile-avatar-container">
+                <img id="avatarImg" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200" class="profile-avatar" alt="Avatar">
+                <button class="edit-avatar-btn" onclick="document.getElementById('avatarInput').click()"><i class="fas fa-camera"></i></button>
+                <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+            </div>
+            
+            <div class="profile-name">Nguyễn Trường Sơn</div>
+            <div class="profile-ig">ig: nt._son10</div>
+            
+            <div class="profile-stats">
+                <span>18 Bài viết</span>
+                <span>369 người bạn</span>
+                <span>36 Cộng đồng</span>
+            </div>
+        </div>
+
+        <!-- POSTS SECTION -->
+        <div class="post-wrapper">
+            <h3 class="section-title">Bài Viết Gần Đây</h3>
+
+            <!-- Hộp xám bên trong -->
+            <div class="post-container-inner">
+                <div class="post-header">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=100" class="avatar-large" alt="User" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;">
+                    <div class="post-header-info">
+                        <div class="post-time">23/06/2025, 10:34:25 PM</div>
+                    </div>
+                </div>
+                
+                <div class="post-edit-actions-top">
+                    <i class="fas fa-pencil-alt"></i>
+                    <i class="fas fa-trash"></i>
+                </div>
+                
+                <img src="https://images.unsplash.com/photo-1506744626753-df830113cf5b?q=80&w=800" style="width: 100%; height: 280px; object-fit: cover; filter: blur(2px);" alt="Post content">
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- RIGHT SIDEBAR (Profile info) -->
+    <div class="sidebar-right-premium">
+
+        <!-- Giới thiệu -->
+        <div class="right-sidebar-section">
+            <div class="right-sidebar-title-container">
+                <h3 class="right-sidebar-title">Giới thiệu</h3>
+                <button class="btn-edit-profile"><i class="fas fa-pencil-alt"></i> Chỉnh sửa</button>
+            </div>
+            
+            <div class="info-item"><i class="fas fa-birthday-cake" style="color: #A16A46;"></i> Ngày sinh - 2005-08-25</div>
+            <div class="info-item"><i class="fas fa-map-marker-alt" style="color: #E53935;"></i> Sống tại - TP. Hồ Chí Minh</div>
+            <div class="info-item"><i class="fas fa-heart" style="color: #E53935;"></i> Mối quan hệ - Đã kết hôn</div>
+            <div class="info-item"><i class="fas fa-graduation-cap" style="color: #FBC02D;"></i> Trường - Hutech</div>
+        </div>
+
+        <!-- Bạn bè -->
+        <div class="right-sidebar-section" style="margin-top: 35px;">
+            <div class="right-sidebar-title-container">
+                <h3 class="right-sidebar-title">Bạn bè</h3>
+            </div>
+            <div class="friend-list">
+                <div class="friend-item">Minh Quang</div>
+                <div class="friend-item">Anh Nhật</div>
+                <div class="friend-item">Mạnh Thùy</div>
+            </div>
+        </div>
+
+        <!-- Ảnh -->
+        <div class="right-sidebar-section" style="margin-top: 35px;">
+            <div class="right-sidebar-title-container">
+                <h3 class="right-sidebar-title">Ảnh</h3>
+            </div>
+            <div class="photo-grid">
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=150" alt="Photo">
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- JS -->
+<script src="config.js"></script>
+<script src="js/api/api.base.js"></script>
+<script src="js/api/api.users.js"></script>
+<script src="js/notification-manager.js"></script>
+<script src="js/shared-layout.js"></script>
+
+<script>
+    // Xử lý thay đổi Ảnh Bìa (Cover Image)
+    document.getElementById('coverInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const objectUrl = URL.createObjectURL(file);
+            document.getElementById('coverImg').src = objectUrl;
+            // TODO: Ở đây bạn có thể gọi API để tải ảnh lên server
+        }
+    });
+
+    // Xử lý thay đổi Ảnh Đại Diện (Avatar Image)
+    document.getElementById('avatarInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const objectUrl = URL.createObjectURL(file);
+            document.getElementById('avatarImg').src = objectUrl;
+            // Cập nhật luôn avatar nhỏ hiển thị ở bảng Tường nếu có id tương ứng (tuỳ chọn)
+            // document.getElementById('topAvatar').src = objectUrl;
+            
+            // TODO: Ở đây bạn có thể gọi API để tải ảnh lên server
+        }
+    });
+</script>
+
+</body>
+</html>

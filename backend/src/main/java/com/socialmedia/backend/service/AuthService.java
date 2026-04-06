@@ -39,7 +39,11 @@ public class AuthService {
         if (userRepository.existsByEmail(email)) throw new RuntimeException("EMAIL_EXISTS");
 
         Role userRole = roleRepository.findByRoleName("USER")
-                .orElseThrow(() -> new RuntimeException("ROLE_USER_NOT_FOUND"));
+                .orElseGet(() -> {
+                    Role r = new Role();
+                    r.setRoleName("USER");
+                    return roleRepository.save(r);
+                });
 
         User u = new User();
         u.setUserName(userName);

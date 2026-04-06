@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Trung Tâm Trợ Giúp • Gummy</title>
+
+    <link rel="stylesheet" href="css/ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Noto+Sans+Vietnamese:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Noto Sans Vietnamese', 'Noto Sans', sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            /* Facebook-like background */
+        }
+
+        /* Override premium layout container color for this page if needed */
+        .layout-premium {
+            background-color: #f0f2f5;
+        }
+
+        .help-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 40px;
+        }
+
+        /* =========================================
+   HERO SEARCH SECTION
+========================================= */
+        .help-hero {
+            background: #e4e6eb;
+            /* Match image gray */
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .help-hero h1 {
+            color: #050505;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 16px 24px 16px 55px;
+            border-radius: 40px;
+            border: none;
+            font-size: 16px;
+            background: #ffffff;
+        }
+
+        .search-wrapper input:focus {
+            outline: none;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #050505;
+            font-size: 20px;
+        }
+
+        /* =========================================
+   QUICK TOPICS GRID 
+========================================= */
+        .topics-section {
+            margin-bottom: 40px;
+        }
+
+        .topics-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #050505;
+            margin-bottom: 20px;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px 20px;
+            /* Smaller gaps make cards wider */
+        }
+
+        .topic-card {
+            background: #ffffff;
+            border-radius: 50px;
+            /* deeply rounded pill */
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: #050505;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        .topic-card:hover {
+            background: #f0f2f5;
+        }
+
+        .topic-icon {
+            font-size: 26px;
+            color: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 35px;
+        }
+
+        .topic-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topic-info h3 {
+            font-size: 16px;
+            /* Standardize font size to fix heavy look */
+            font-weight: 600;
+            /* Less heavy than 700 */
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        @media (max-width: 900px) {
+            .topics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ⭐ PAGE LAYOUT (Shared layout injected by shared-layout.js) -->
+    <div class="layout-premium">
+
+        <div class="help-container">
+
+            <!-- HERO SECTION -->
+            <div class="help-hero">
+                <h1>Xin chào, chúng tôi có thể giúp gì cho bạn ?</h1>
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="">
+                </div>
+            </div>
+
+            <!-- QUICK TOPICS -->
+            <div class="topics-section">
+                <h2 class="topics-title">Chủ đề phổ biến</h2>
+                <div class="topics-grid">
+                    <div class="topic-card">
+                        <div class="topic-icon"><i class="fas fa-user-circle"></i></div>
+                        <div class="topic-info">
+                            <h3>Cài đặt tài khoản</h3>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-icon"><i class="fas fa-lock"></i></div>
+                        <div class="topic-info">
+                            <h3>Quyền riêng tư</h3>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-icon"><i class="fas fa-image"></i></div>
+                        <div class="topic-info">
+                            <h3>Bảng tin & Tin</h3>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-icon"><i class="fas fa-users"></i></div>
+                        <div class="topic-info">
+                            <h3>Bạn bè & Người<br>theo dõi</h3>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-icon"><i class="fas fa-shield-halved"></i></div>
+                        <div class="topic-info">
+                            <h3>Bảo mật & Trợ giúp</h3>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-icon"><i class="fas fa-radio"></i></div>
+                        <div class="topic-info">
+                            <h3>Trang & Nhóm</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div> <!-- END layout -->
+
+    <script src="config.js"></script>
+    <script src="js/api/api.base.js"></script>
+    <script src="js/api/api.users.js"></script>
+    <script src="js/api/api.chat.js"></script>
+    <script src="js/shared-layout.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,58 @@
+version: '3.8'
+
+# Định nghĩa các dịch vụ (services) sẽ chạy chung một lúc
+services:
+
+  # 1. Database SQL Server ảo (Thay thế cho việc tải SQL Server Management Studio nặng nề)
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: gummy-db
+    environment:
+      - ACCEPT_EULA=Y # Bắt buộc đồng ý điều khoản MS
+      - MSSQL_SA_PASSWORD=MathGame@123456 # Bắt buộc phải là Strong Password (có hoa, số, ký tự đặc biệt)
+    ports:
+      - "51433:1433"
+    networks:
+      - socialmedia-net
+    volumes:
+      - sqldata:/var/opt/mssql
+
+  # 2. Dịch vụ Backend Java Spring Boot
+  backend:
+    build:
+      context: ./backend # Trỏ tới thư mục chứa mã nguồn backend
+      dockerfile: Dockerfile
+    container_name: gummy-backend
+    image: thaianhnhat2216/gummy-backend:v1.0.0
+    restart: always # Tự động chạy lại nếu bị lỗi lúc đầu
+    ports:
+      - "8080:8080" # Map ra web chạy api
+    depends_on:
+      - db
+    networks:
+      - socialmedia-net
+    environment:
+      - "SPRING_DATASOURCE_URL=jdbc:sqlserver://gummy-db:1433;databaseName=SocialMedia;encrypt=false;trustServerCertificate=true"
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=MathGame@123456
+
+  # 3. Dịch vụ Giao diện người dùng
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gummy-frontend
+    image: thaianhnhat2216/gummy-frontend:v1.0.0
+    ports:
+      - "5500:80" # Map 5500 máy ngoài vào 80 nginx chạy trong
+    depends_on:
+      - backend
+    networks:
+      - socialmedia-net
+
+networks:
+  socialmedia-net:
+    driver: bridge
+
+volumes:
+  sqldata:

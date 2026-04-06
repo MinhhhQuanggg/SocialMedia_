@@ -40,7 +40,8 @@ public class SecurityConfig {
             ))
             .authorizeHttpRequests(auth -> auth
                 // PUBLIC
-                .requestMatchers("/api/auth/**", "/error", "/ws/**", 
+                .requestMatchers("/", "/index.html", "/*.html", "/css/**", "/js/**", "/assets/**", "/includes/**", "/images/**",
+                    "/api/auth/**", "/error", "/ws/**", 
                     "/api/profile/*/", "/api/posts/profile/**", "/api/friends/profile/**",
                     "/api/upload/**", "/uploads/**").permitAll()
 
